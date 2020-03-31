@@ -7,6 +7,7 @@ namespace FineOnlinePaymentSystem.Models
 {
     public class CaseOffenders
     {
+       
         public int CaseID { get; set; }
         public Case Case { get; set; }
 
