@@ -19,6 +19,10 @@ namespace FineOnlinePaymentSystem.Models
         public Officer Officer { get; set; }
 
 
+        public int OffenceID { get; set; }
+        public Offence Offence { get; set; }
+
+
         public ICollection<CaseOffenders> CaseOffenders { get; set; }
 
     }
