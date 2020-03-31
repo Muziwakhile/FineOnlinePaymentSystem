@@ -14,5 +14,7 @@ namespace FineOnlinePaymentSystem.Models
 
         [Required,Column(TypeName = "varchar(15)")]
         public string Name { get; set; }
+
+        public virtual List<Case> Cases { get; set; }
     }
 }

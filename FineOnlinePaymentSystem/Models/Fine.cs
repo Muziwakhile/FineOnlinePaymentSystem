@@ -22,5 +22,8 @@ namespace FineOnlinePaymentSystem.Models
 
         public int OffenderID { get; set; }
         public Offender Offender { get; set; }
+
+
+        public virtual List<Amortization> Amortizations { get; set; }
     }
 }

@@ -54,38 +54,47 @@ namespace FineOnlinePaymentSystem.Data
             builder.Entity<Offence>().HasData(
             new Offence
             {
+                OffenseID = 1,
                 Name = "Robbery"
             },
             new Offence
             {
+                OffenseID = 2,
                 Name = "Assault"
             },
             new Offence
             {
+                OffenseID = 3,
                 Name = "Harassment"
             },
             new Offence
             {
+                OffenseID = 4,
                 Name = "Vandalism"
             },
             new Offence
             {
+                OffenseID = 5,
                 Name = "Theft"
             },
             new Offence
             {
+                OffenseID = 6,
                 Name = "Public Indecency(Indecent Exposure)"
             },
             new Offence
             {
+                OffenseID = 7,
                 Name = "Public Indecency(Open Container)"
             },
             new Offence
             {
+                OffenseID = 8,
                 Name = "Bribery"
             },
             new Offence
             {
+                OffenseID = 9,
                 Name = "Stalking"
             }
             );
@@ -97,10 +106,12 @@ namespace FineOnlinePaymentSystem.Data
             builder.Entity<OffenderStatus>().HasData(
                 new OffenderStatus
                 {
+                    StatusID = 1,
                     Name ="In Custody"
                 },
                 new Offender
                 {
+                    StatusID = 2,
                     Name = "Released"
                 }
                 );
@@ -110,10 +121,12 @@ namespace FineOnlinePaymentSystem.Data
             builder.Entity<CaseStatus>().HasData(
                 new CaseStatus
                 {
+                    CaseStatusID = 1,
                     Name = "Pending"
                 },
                 new CaseStatus
                 {
+                    CaseStatusID = 2,
                     Name = "Closed"
                 }
                 );
@@ -122,6 +135,7 @@ namespace FineOnlinePaymentSystem.Data
             builder.Entity<AmortizationSettings>().HasData(
                 new AmortizationSettings
                 {
+                    AmortizationSettingsID = 1,
                     PercentPerDay = 6,
                     DaysBeforeAmortization = 3
                 }

@@ -17,5 +17,8 @@ namespace FineOnlinePaymentSystem.Models
 
         [Column(TypeName = "varchar(max)")]
         public string Description { get; set; }
+
+
+        public virtual List<Case> Cases { get; set; }
     }
 }

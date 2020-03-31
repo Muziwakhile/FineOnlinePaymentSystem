@@ -30,5 +30,8 @@ namespace FineOnlinePaymentSystem.Models
         public IdentityUser IdentityUser { get; set; }
 
 
+        public virtual List<FinePayment> FinePayments { get; set; }
+
+
     }
 }

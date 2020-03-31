@@ -5,6 +5,17 @@
     <UserSecretsId>aspnet-FineOnlinePaymentSystem-77655C63-CDA8-4D5D-ACAA-7BF22652D689</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200331132413_CreateDB.cs" />
+    <Compile Remove="Data\Migrations\20200331132413_CreateDB.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200331135853_CreateDb2.cs" />
+    <Compile Remove="Data\Migrations\20200331135853_CreateDb2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200331140841_CreateDB.cs" />
+    <Compile Remove="Data\Migrations\20200331140841_CreateDB.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200331141505_CreateDb.cs" />
+    <Compile Remove="Data\Migrations\20200331141505_CreateDb.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />

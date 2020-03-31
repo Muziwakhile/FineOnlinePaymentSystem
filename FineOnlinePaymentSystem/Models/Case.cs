@@ -42,6 +42,8 @@ namespace FineOnlinePaymentSystem.Models
 
 
         public ICollection<CaseOffender> CaseOffenders { get; set; }
+        public virtual List<Fine> Fines { get; set; }
+        public virtual List<Amortization> Amortizations { get; set; }
 
     }
 }
