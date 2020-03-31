@@ -49,6 +49,83 @@ namespace FineOnlinePaymentSystem.Data
             builder.Entity<CaseOffender>().HasOne(co => co.Case).WithMany(co => co.CaseOffenders).HasForeignKey(co => co.CaseID);
             builder.Entity<CaseOffender>().HasOne(co => co.Offender).WithMany(co => co.CaseOffenders).HasForeignKey(co => co.OffenderID);
 
+
+            //Seeding offences
+            builder.Entity<Offence>().HasData(
+            new Offence
+            {
+                Name = "Robbery"
+            },
+            new Offence
+            {
+                Name = "Assault"
+            },
+            new Offence
+            {
+                Name = "Harassment"
+            },
+            new Offence
+            {
+                Name = "Vandalism"
+            },
+            new Offence
+            {
+                Name = "Theft"
+            },
+            new Offence
+            {
+                Name = "Public Indecency(Indecent Exposure)"
+            },
+            new Offence
+            {
+                Name = "Public Indecency(Open Container)"
+            },
+            new Offence
+            {
+                Name = "Bribery"
+            },
+            new Offence
+            {
+                Name = "Stalking"
+            }
+            );
+
+
+
+
+            //seeding OffenderStatus
+            builder.Entity<OffenderStatus>().HasData(
+                new OffenderStatus
+                {
+                    Name ="In Custody"
+                },
+                new Offender
+                {
+                    Name = "Released"
+                }
+                );
+
+
+            //seeding caseStatus
+            builder.Entity<CaseStatus>().HasData(
+                new CaseStatus
+                {
+                    Name = "Pending"
+                },
+                new CaseStatus
+                {
+                    Name = "Closed"
+                }
+                );
+
+            //seeding AmortizationSettings
+            builder.Entity<AmortizationSettings>().HasData(
+                new AmortizationSettings
+                {
+                    PercentPerDay = 6,
+                    DaysBeforeAmortization = 3
+                }
+                );
         }
     }
 }
