@@ -35,6 +35,6 @@ namespace FineOnlinePaymentSystem.Models
         public OffenderStatus Status { get; set; }
 
 
-        public ICollection<CaseOffenders> CaseOffenders { get; set; }
+        public ICollection<CaseOffender> CaseOffenders { get; set; }
     }
 }

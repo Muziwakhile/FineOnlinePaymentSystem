@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FineOnlinePaymentSystem.Models
 {
-    public class CaseOffenders
+    public class CaseOffender
     {
        
         public int CaseID { get; set; }
