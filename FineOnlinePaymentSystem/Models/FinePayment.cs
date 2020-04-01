@@ -23,7 +23,7 @@ namespace FineOnlinePaymentSystem.Models
         public float AmountPayable { get; set; }
 
         [Required,Display(Name ="Proof of Payment")]
-        public IFormFile Attachment { get; set; }
+        public byte[] Attachment { get; set; }
 
 
         public int AmortizationID { get; set; }
