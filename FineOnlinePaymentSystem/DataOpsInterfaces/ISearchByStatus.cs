@@ -7,6 +7,6 @@ namespace FineOnlinePaymentSystem.DataOpsInterfaces
 {
     interface ISearchByStatus<T>:ISearchByPin<T>
     {
-        List<T> SearchByStatus(string status);
+        List<T> SearchByStatus(int status);
     }
 }

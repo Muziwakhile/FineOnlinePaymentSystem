@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace FineOnlinePaymentSystem.DataOperationsImplementation
 {
@@ -21,7 +22,7 @@ namespace FineOnlinePaymentSystem.DataOperationsImplementation
         }
 
         public virtual List<T> GetAll()
-        {
+        {  
             return dbContext.Set<T>().ToList<T>();
         }
 
