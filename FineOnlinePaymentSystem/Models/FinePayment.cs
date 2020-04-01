@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -22,7 +23,7 @@ namespace FineOnlinePaymentSystem.Models
         public float AmountPayable { get; set; }
 
         [Required,Display(Name ="Proof of Payment")]
-        public Byte Attachment { get; set; }
+        public IFormFile Attachment { get; set; }
 
 
         public int AmortizationID { get; set; }
