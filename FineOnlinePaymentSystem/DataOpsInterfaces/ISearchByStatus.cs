@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace FineOnlinePaymentSystem.DataOpsInterfaces
 {
-    interface ISearchByStatus<T>:ISearchByPin<T>
+    interface ISearchByStatus<T>
     {
         List<T> SearchByStatus(int status);
     }

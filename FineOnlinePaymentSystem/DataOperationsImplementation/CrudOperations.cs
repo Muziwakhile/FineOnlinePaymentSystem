@@ -22,7 +22,7 @@ namespace FineOnlinePaymentSystem.DataOperationsImplementation
         }
 
         public virtual List<T> GetAll()
-        {  
+        {
             return dbContext.Set<T>().ToList<T>();
         }
 
