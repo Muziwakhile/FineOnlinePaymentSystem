@@ -141,5 +141,11 @@ namespace FineOnlinePaymentSystem.Data
                 }
                 );
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+            optionsBuilder.UseLazyLoadingProxies();
+        }
     }
 }

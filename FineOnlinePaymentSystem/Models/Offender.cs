@@ -28,13 +28,15 @@ namespace FineOnlinePaymentSystem.Models
         public string Nationality { get; set; }
 
         [Required, Column(TypeName = "varchar(100)")]
+        [Display(Name = "Physical Address")]
         public string HomeAddress { get; set; }
 
 
         public int StatusID { get; set; }
-        public OffenderStatus Status { get; set; }
+        public virtual OffenderStatus Status { get; set; }
 
 
-        public ICollection<CaseOffender> CaseOffenders { get; set; }
+        public virtual ICollection<CaseOffender> CaseOffenders { get; set; }
+        public virtual ICollection<Fine> Fines { get; set; }
     }
 }

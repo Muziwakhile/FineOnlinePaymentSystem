@@ -23,10 +23,13 @@ namespace FineOnlinePaymentSystem.Models
 
 
         public int CaseID { get; set; }
-        public Case Case { get; set; }
+        public virtual Case Case { get; set; }
 
 
         public int FineID { get; set; }
-        public Fine Fine { get; set; }
+        public virtual Fine Fine { get; set; }
+
+
+        public virtual List<FinePayment> FinePayments { get; set; }
     }
 }

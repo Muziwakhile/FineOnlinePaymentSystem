@@ -22,9 +22,53 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Offenders" asp-action="Index">Offenders</a>
-                        </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("SuperAdmin"))
+                            {
+                                <li class="nav-item">
+                                    @*<a class="nav-link text-dark" asp-area="" asp-controller="Offenders" asp-action="Index">Offenders</a>*@
+                                </li>
+                                <li class="nav-item dropdown text-dark">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Offenders</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-controller="Offenders" asp-action="Create">Add Offenders</a>
+                                        <a class="dropdown-item" asp-controller="Offenders" asp-action="Index">View Offenders</a>
+                                        @*<a class="dropdown-item" href="#">Link 3</a>*@
+                                    </div>
+                                </li>
+                            }
+                            else if (User.IsInRole("Officer"))
+                            {
+                                <li class="nav-item dropdown text-dark">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Cases</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">Add Case</a>
+                                        <a class="dropdown-item" href="#">View Cases</a>
+                                        @*<a class="dropdown-item" href="#">Link 3</a>*@
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown text-dark">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Fines</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View Fines</a>
+                                        @*<a class="dropdown-item" href="#">View Cases</a>*@
+                                        @*<a class="dropdown-item" href="#">Link 3</a>*@
+                                    </div>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item dropdown text-dark">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Fine Payment</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#">View Fines</a>
+                                        <a class="dropdown-item" href="#">Pay Fine</a>
+                                        @*<a class="dropdown-item" href="#">Link 3</a>*@
+                                    </div>
+                                </li>
+                            }
+                        }
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>

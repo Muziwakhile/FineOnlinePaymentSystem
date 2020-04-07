@@ -31,17 +31,17 @@ namespace FineOnlinePaymentSystem.Models
         public DateTime? CourtDate { get; set; }
 
         public int OfficerID { get; set; }
-        public Officer Officer { get; set; }
+        public virtual Officer Officer { get; set; }
 
 
         public int OffenceID { get; set; }
-        public Offence Offence { get; set; }
+        public virtual Offence Offence { get; set; }
 
         public int CaseStatusID { get; set; }
-        public CaseStatus CaseStatus { get; set; }
+        public virtual CaseStatus CaseStatus { get; set; }
 
 
-        public ICollection<CaseOffender> CaseOffenders { get; set; }
+        public virtual ICollection<CaseOffender> CaseOffenders { get; set; }
         public virtual List<Fine> Fines { get; set; }
         public virtual List<Amortization> Amortizations { get; set; }
 

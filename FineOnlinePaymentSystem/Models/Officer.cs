@@ -26,7 +26,7 @@ namespace FineOnlinePaymentSystem.Models
         public long Contact { get; set; }
 
         public string UserID { get; set; }
-        public IdentityUser User { get; set; }
+        public virtual IdentityUser User { get; set; }
 
 
         public virtual List<Case> Cases { get; set; }

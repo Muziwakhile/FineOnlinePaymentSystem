@@ -9,9 +9,9 @@ namespace FineOnlinePaymentSystem.Models
     {
        
         public int CaseID { get; set; }
-        public Case Case { get; set; }
+        public virtual Case Case { get; set; }
 
         public int OffenderID { get; set; }
-        public Offender Offender { get; set; }
+        public virtual Offender Offender { get; set; }
     }
 }

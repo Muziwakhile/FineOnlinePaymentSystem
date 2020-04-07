@@ -27,12 +27,12 @@ namespace FineOnlinePaymentSystem.Models
 
 
         public int AmortizationID { get; set; }
-        public Amortization Amortization { get; set; }
+        public virtual Amortization Amortization { get; set; }
 
         public int RelativeID { get; set; }
-        public Relative Relative { get; set; }
+        public virtual Relative Relative { get; set; }
 
         public int FineID { get; set; }
-        public Fine Fine { get; set; }
+        public virtual Fine Fine { get; set; }
     }
 }
