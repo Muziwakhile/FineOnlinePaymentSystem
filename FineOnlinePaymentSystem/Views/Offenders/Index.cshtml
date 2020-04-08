@@ -4,7 +4,7 @@
     ViewData["Title"] = "Offenders";
 }
 
-<h1>Index</h1>
+<h1>Our List of Offenders</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,7 +12,7 @@
 <form class="form-inline"  asp-action="Index" method="get">
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
     
-        <input type="text" name="pin" class="form-control col-md-2  mr-3" placeholder="Search By PIN"/>
+        <input type="text" name="pin" class="form-control col-md-2  mr-1" placeholder="Search By PIN"/>
         <input type ="submit" value="Search" class="btn btn-light" />
         @*<span asp-validation-for="Name" class="text-danger"></span>*@
    
@@ -21,7 +21,7 @@
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
     
 
-        <select name="Status" class="form-control col-md-2 mr-3" asp-items="@ViewBag.StatusID as SelectList"><option value="">Select Status</option> </select>
+        <select name="Status" class="form-control col-md-2 mr-1" asp-items="@ViewBag.StatusID as SelectList"><option value="">Select Status</option> </select>
         <input type="submit" value="Search" class="btn btn-light" />
         @*<span asp-validation-for="Name" class="text-danger"></span>*@
   

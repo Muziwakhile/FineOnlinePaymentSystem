@@ -80,10 +80,37 @@ namespace FineOnlinePaymentSystem.Controllers
                 offender.StatusID = 1;
 
                 //insert the offender in the database
-                offenderOps.Insert(offender);
+                offenderOps.Insert(offender); 
             }
 
             return RedirectToAction("Index","Offenders");
+        }
+
+
+        [HttpGet]
+        public IActionResult Edit(int Id)
+        {
+
+            return View(offenderOps.GetById(Id));
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(Offender offender)
+        {
+            if (ModelState.IsValid)
+            {
+                offenderOps.Update(offender);
+            }
+            return RedirectToAction("Index");
+        }
+
+
+        [HttpGet]
+        public IActionResult Details(int Id)
+        {
+
+            return View(offenderOps.GetById(Id));
         }
     }
 }
