@@ -9,14 +9,23 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form  asp-action="Index" method="get">
+<form class="form-inline"  asp-action="Index" method="get">
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-    <div class="form-group">
-        <input type="text" name="pin" class=" col-2"/>
+    
+        <input type="text" name="pin" class="form-control col-md-2  mr-3" placeholder="Search By PIN"/>
         <input type ="submit" value="Search" class="btn btn-light" />
         @*<span asp-validation-for="Name" class="text-danger"></span>*@
-    </div>
+   
     </form>
+<form class="form-inline" asp-action="Index" method="get">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+    
+
+        <select name="Status" class="form-control col-md-2 mr-3" asp-items="@ViewBag.StatusID as SelectList"><option value="">Select Status</option> </select>
+        <input type="submit" value="Search" class="btn btn-light" />
+        @*<span asp-validation-for="Name" class="text-danger"></span>*@
+  
+</form>
     <table class="table">
         <thead>
             <tr>
