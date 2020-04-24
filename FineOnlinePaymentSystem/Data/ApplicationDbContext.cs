@@ -38,7 +38,7 @@ namespace FineOnlinePaymentSystem.Data
             //Setting up fields that will be Unique in the database
             builder.Entity<Offender>().HasIndex(o => o.PIN).IsUnique();
             builder.Entity<Relative>().HasIndex(r => r.PIN).IsUnique();
-            builder.Entity<Officer>().HasIndex(ofc => ofc.FroceNumber).IsUnique();
+            builder.Entity<Officer>().HasIndex(ofc => ofc.ForceNumber).IsUnique();
             builder.Entity<Case>().HasIndex(c => c.CaseNumber).IsUnique();
 
 

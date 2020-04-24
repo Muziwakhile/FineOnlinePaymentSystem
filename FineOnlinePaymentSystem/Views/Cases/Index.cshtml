@@ -1,0 +1,83 @@
+﻿@model IEnumerable<FineOnlinePaymentSystem.Models.Case>
+
+@{
+    ViewData["Title"] = "Cases";
+}
+
+<h1>List of Cases</h1>
+
+<p>
+    <a asp-action="Create">Create Case</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CaseNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CaseDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CrimeLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfCrime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOfArrest)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CourtDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Officer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Offence)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CaseStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CrimeLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfCrime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfArrest)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CourtDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Officer.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Offence.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CaseStatus.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CaseID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CaseID">View</a> |
+                @*<a asp-action="Delete" asp-route-id="@item.CaseID">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

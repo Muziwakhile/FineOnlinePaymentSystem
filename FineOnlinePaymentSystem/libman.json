@@ -1,0 +1,26 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@5.13.0",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/",
+      "files": [
+        "jquery-ui.min.js",
+        "themes/base/jquery-ui.min.css"
+      ]
+    }
+  ,
+{
+  "library": "autocomplete.js@0.37.1",
+  "destination": "wwwroot/lib/autocomplete.js/",
+  "files": [
+    "autocomplete.min.js"
+  ]
+}
+]
+}

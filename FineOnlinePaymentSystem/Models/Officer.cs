@@ -20,7 +20,7 @@ namespace FineOnlinePaymentSystem.Models
         public string Surname { get; set; }
 
         [Required]
-        public int FroceNumber { get; set; }
+        public int ForceNumber { get; set; }
 
         [Required]
         public long Contact { get; set; }

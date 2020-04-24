@@ -8,5 +8,6 @@ namespace FineOnlinePaymentSystem.DataOpsInterfaces
     interface ISearchByForceNumber<T>
     {
         T SearchByForceNumber(int forceNumber);
+        List<int> ListByForceNumber(int ForceNumber);
     }
 }

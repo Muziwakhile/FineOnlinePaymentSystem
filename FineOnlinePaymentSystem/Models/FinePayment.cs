@@ -26,6 +26,7 @@ namespace FineOnlinePaymentSystem.Models
         public byte[] Attachment { get; set; }
 
 
+
         public int AmortizationID { get; set; }
         public virtual Amortization Amortization { get; set; }
 

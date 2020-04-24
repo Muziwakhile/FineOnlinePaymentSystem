@@ -15,19 +15,19 @@ namespace FineOnlinePaymentSystem.Models
         [Required, Display(Name ="Case Number")]
         public int CaseNumber { get; set; }
         
-        [Required,Column(TypeName ="varchar(max)"),Display(Name ="Case Description")]
+        [Required,Column(TypeName ="varchar(max)"),Display(Name ="Case Description"), MaxLength(50000)]
         public string CaseDescription { get; set; }
 
         [Required, Column(TypeName = "varchar(100)"),Display(Name ="Crime Location")]
         public string CrimeLocation { get; set; }
 
-        [Required, Display(Name = "Date Of Crime")]
+        [Required, Display(Name = "Date Of Crime"), DataType(DataType.Date)]
         public DateTime DateOfCrime { get; set; }
 
-        [Display(Name ="Date Of Arrest")]
+        [Display(Name ="Date Of Arrest"), DataType(DataType.Date)]
         public DateTime? DateOfArrest { get; set; }
 
-        [Display(Name ="Court Date")]
+        [Display(Name ="Court Date"), DataType(DataType.Date)]
         public DateTime? CourtDate { get; set; }
 
         public int OfficerID { get; set; }
