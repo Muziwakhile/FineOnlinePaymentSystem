@@ -17,6 +17,8 @@ namespace FineOnlinePaymentSystem.DataOperationsImplementation
             context = _context;
         }
 
+       
+
         public Case SearchByCaseNumber(int caseNumber)
         {
             return context.Cases.Where<Case>(c => c.CaseNumber == caseNumber).FirstOrDefault();
@@ -26,6 +28,5 @@ namespace FineOnlinePaymentSystem.DataOperationsImplementation
         {
             return context.Cases.Where<Case>(c => c.CaseStatusID == status).ToList<Case>();
         }
-
     }
 }

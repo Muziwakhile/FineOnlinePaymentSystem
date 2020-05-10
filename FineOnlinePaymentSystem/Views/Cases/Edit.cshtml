@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Edit";
 }
+
 <h1>Edit</h1>
 
 <h4>Case</h4>
@@ -36,10 +37,10 @@
                         <span asp-validation-for="DateOfCrime" class="text-danger"></span>
                     </div>
                     @*<div class="form-group">
-            <label asp-for="CaseStatusID" class="control-label"></label>
-            <select asp-for="CaseStatusID" class="form-control" asp-items="ViewBag.CaseStatusID"></select>
-            <span asp-validation-for="CaseStatusID" class="text-danger"></span>
-        </div>*@
+                            <label asp-for="CaseStatusID" class="control-label"></label>
+                            <select asp-for="CaseStatusID" class="form-control" asp-items="ViewBag.CaseStatusID"></select>
+                            <span asp-validation-for="CaseStatusID" class="text-danger"></span>
+                        </div>*@
                     <div class="form-group d-inline">
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
@@ -48,7 +49,7 @@
                     </div>
                 </div>
                 <div class="col-md-3 mr-3">
-                   
+
                     <div class="form-group">
                         <label asp-for="DateOfArrest" class="control-label"></label>
                         <input asp-for="DateOfArrest" class="form-control" />
@@ -70,68 +71,10 @@
                         <span asp-validation-for="OffenceID" class="text-danger"></span>
                     </div>
                 </div>
-                
-                
-                <div class="col-md-3">
-                    @if (Model.CaseOffenders.Count > 0)
-                    {
-                    <h4>Offenders</h4>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Surname
-                                    </th>
-                                    <th>
-                                        PIN
-                                    </th>
-                                    <th>
-                                        Age
-                                    </th>
-                                    @*<th>
-                            Nationality
-                        </th>*@
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.CaseOffenders)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Offender.Name)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Offender.Surname)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Offender.PIN)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => item.Offender.Age)
-                                        </td>
-                                        @*<td>
-                                @Html.DisplayFor(modelItem => item.Nationality)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.HomeAddress)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Status.Name)
-                            </td>*@
-                                        @*<td>
-                                <a asp-action="Edit" asp-route-id="@item.OffenderID">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.OffenderID">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.OffenderID">Delete</a>
-                            </td>*@
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    }
+
+                <div class="col-md-3" id="offenders">
+
                 </div>
             </div>
 
@@ -147,8 +90,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <a href="#" class="close fa-align-right" data-dismiss="modal">&times;</a>
                 <h3 class="modal-title align-left"> Add Offender</h3>
+                <a href="#" class="close fa-align-right" data-dismiss="modal">&times;</a>
             </div>
             <div class="modal-body">
                 <form class="form-inline" asp-action="SearchByPin" method="get" id="pinForm">
@@ -171,48 +114,81 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("LoadCOF")",
+            data: { ID: @Model.CaseID },
+            cache: false,
+            //dataType: "html",
+            success: function (data) {
+                $("#offenders").html(data)
+            },
+
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+
+
         $("#btnSubmit").click(function () {
             var data = $("#pinForm").serialize();
+            var caseId = @Model.CaseID;
             $.ajax({
                 type: "GET",
-                url: "@Url.Action("SearchByPin")?"+ data,
-                success: function (response) {   
-                    $("#pin").text() = "";
-                    $("#myModal").modal("hide");
+                url: "@Url.Action("SearchByPin")?" + data,
+                data: {caseId:caseId},
+                success: function (response) {
+    
                     $.ajax({
-                        type: "Get",
-                        url: "@Url.Action("Edit")" 
+                        type: "GET",
+                        url: "@Url.Action("LoadCOF")",
+                        data: { ID: @Model.CaseID },
+                        cache: false,
+                        //dataType: "html",
+                        success: function (data) {
+                            $("#offenders").html(data)
+                            $("#pin").val("");
+                            $("#myModal").modal('hide');
+                        },
+
+                        error: function (xhr, status, error) {
+                            alert("Error");
+                        }
                     })
+
+
                 }
             })
         })
 
+
         $("#officer").autocomplete({
-            source: function (request,response) {
+            source: function (request, response) {
                 $.ajax({
                     type: "GET",
                     url: "@Url.Action("SearchByForceNumber")",
                     data: { forceNumber: $("#officer").val() },
-                    cache:false,
+                    cache: false,
                     dataType: "json",
                     success: function (data) {
                         response($.map(data, function (item) {
 
-                            return { value: item} ;
+                            return { value: item };
                         }));
-                        
+
                     },
-                   
-                    error: function  (xhr,status,error) {
+
+                    error: function (xhr, status, error) {
                         alert("Error");
                     }
                 })
             }
-        })
-    
+        });
+
 
     })
-</script>
+    </script>
 }

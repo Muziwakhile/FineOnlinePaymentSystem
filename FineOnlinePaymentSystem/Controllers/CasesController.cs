@@ -17,7 +17,7 @@ namespace FineOnlinePaymentSystem.Controllers
         private readonly OffenderOps offender;
         private readonly CrudOperations<Offence> offence;
         private readonly OfficerOps officer;
-        private readonly CrudOperations<CaseOffender> caseof;
+        private readonly CaseOffenderOps caseof;
 
         public CasesController(ApplicationDbContext _context)
         {
@@ -26,7 +26,7 @@ namespace FineOnlinePaymentSystem.Controllers
             offender = new OffenderOps(context);
             offence = new CrudOperations<Offence>(context);
             officer = new OfficerOps(context);
-            caseof = new CrudOperations<CaseOffender>(context);
+            caseof = new CaseOffenderOps(context);
         }
 
 
@@ -70,8 +70,11 @@ namespace FineOnlinePaymentSystem.Controllers
             TempData["CaseID"] = ID;
             var result = caseOps.GetById(ID);
             ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
+            //ViewBag.caseoff = caseof.GetById(ID);
             return View(result);
         }
+
+
 
         [HttpPost]
         public IActionResult Edit(Case model)
@@ -80,19 +83,36 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
         [HttpGet]
-        public IActionResult SearchByPin(string pin)
+        public IActionResult SearchByPin(string pin,int caseId)
         {
 
-            var caseID = (int)TempData["CaseID"];
+          
             var result = offender.SearchByPin(pin);
             if (result != null)
             {
-                caseof.Insert(new CaseOffender { CaseID = caseID, OffenderID = result.OffenderID });
-                return Json( new { ID = caseID});
+                caseof.Insert(new CaseOffender { CaseID = caseId, OffenderID = result.OffenderID });
+                return Json( new { ID = caseId });
             }
             else
             {
-                return Json(new { ID = caseID });
+                return Json(new { ID = caseId });
+            }
+           
+        }
+
+
+        [HttpGet]
+        public IActionResult LoadCOF(int ID)
+        {
+            var cofmodel= caseof.GetByCaseIDOnly(ID);
+
+            if (cofmodel != null)
+            {
+                return PartialView("_SearchPartial", cofmodel);
+            }
+            else
+            {
+                return null;
             }
            
         }

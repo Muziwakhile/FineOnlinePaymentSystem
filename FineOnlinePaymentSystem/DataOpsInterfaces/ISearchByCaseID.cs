@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace FineOnlinePaymentSystem.DataOpsInterfaces
 {
-    interface ISearchByCaseNumber<T>
+    public interface ISearchByCaseID<T>
     {
-        T SearchByCaseNumber(int caseNumber);
-        
+        List<T> GetByCaseIDOnly(int Id);
     }
 }

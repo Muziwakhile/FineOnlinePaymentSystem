@@ -1,22 +1,22 @@
-﻿@model IEnumerable<FineOnlinePaymentSystem.Models.Offender>
+﻿@model IEnumerable<FineOnlinePaymentSystem.Models.CaseOffender>
 @*<p>
         <a asp-action="Create">Create New</a>
     </p>*@
-   
+    <h4>Offenders</h4>
     <table class="table">
         <thead>
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Name)
+                    Name
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Surname)
+                   Surname
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.PIN)
+                    PIN
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Age)
+                    Age
                 </th>
                 @*<th>
                     @Html.DisplayNameFor(model => model.Nationality)
@@ -33,34 +33,36 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Surname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PIN)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Age)
-                    </td>
-                    @*<td>
-                        @Html.DisplayFor(modelItem => item.Nationality)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.HomeAddress)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status.Name)
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.OffenderID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.OffenderID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.OffenderID">Delete</a>
-                    </td>*@
-                </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Offender.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Offender.Surname)
+                </td>                                 
+                <td>
+                    
+                    @Html.DisplayFor(modelItem => item.Offender.PIN)
+                </td>                               
+                <td>
+                   
+                    @Html.DisplayFor(modelItem => item.Offender.Age)
+                </td>                                 
+                <td>
+            @*@Html.DisplayFor(modelItem => item.Nationality)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HomeAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Status.Name)
+        </td>*@
+        <td>
+            @*<a asp-action="Edit" asp-route-id="@item.OffenderID">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.OffenderID">Details</a> |*@
+            @*<a asp-action="Delete" asp-route-id="@item.OffenderID">Delete</a>*@
+        </td>
+            </tr>
             }
         </tbody>
     </table>
