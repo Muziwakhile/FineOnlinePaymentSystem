@@ -11,7 +11,7 @@
     <div class="col-md-12">
         <form asp-action="Edit">
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-3 mr-3">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="CaseID" />
                     <div class="form-group">
@@ -21,7 +21,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="CaseDescription" class="control-label"></label>
-                        <input asp-for="CaseDescription" class="form-control" />
+                        <textarea rows="4" asp-for="CaseDescription" class="form-control"></textarea>
                         <span asp-validation-for="CaseDescription" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -29,11 +29,26 @@
                         <input asp-for="CrimeLocation" class="form-control" />
                         <span asp-validation-for="CrimeLocation" class="text-danger"></span>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="DateOfCrime" class="control-label"></label>
                         <input asp-for="DateOfCrime" class="form-control" />
                         <span asp-validation-for="DateOfCrime" class="text-danger"></span>
                     </div>
+                    @*<div class="form-group">
+            <label asp-for="CaseStatusID" class="control-label"></label>
+            <select asp-for="CaseStatusID" class="form-control" asp-items="ViewBag.CaseStatusID"></select>
+            <span asp-validation-for="CaseStatusID" class="text-danger"></span>
+        </div>*@
+                    <div class="form-group d-inline">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                    <div class="form-group d-inline">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Offender</a>
+                    </div>
+                </div>
+                <div class="col-md-3 mr-3">
+                   
                     <div class="form-group">
                         <label asp-for="DateOfArrest" class="control-label"></label>
                         <input asp-for="DateOfArrest" class="form-control" />
@@ -45,25 +60,14 @@
                         <span asp-validation-for="CourtDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label  class="control-label">Forcer Number</label>
+                        <label class="control-label">Forcer Number</label>
                         <input asp-for="@Model.Officer.ForceNumber" type="text" id="officer" class="form-control" />
                         <span asp-validation-for="@Model.Officer.ForceNumber" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="OffenceID"  class="control-label"></label>
+                        <label asp-for="Offence" class="control-label"></label>
                         <select asp-for="OffenceID" class="form-control" asp-items="ViewBag.OffenceID"><option value="">Select Offence</option></select>
                         <span asp-validation-for="OffenceID" class="text-danger"></span>
-                    </div>
-                    @*<div class="form-group">
-                            <label asp-for="CaseStatusID" class="control-label"></label>
-                            <select asp-for="CaseStatusID" class="form-control" asp-items="ViewBag.CaseStatusID"></select>
-                            <span asp-validation-for="CaseStatusID" class="text-danger"></span>
-                        </div>*@
-                    <div class="form-group d-inline">
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                    </div>
-                    <div class="form-group d-inline">
-                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Offender</a>
                     </div>
                 </div>
                 
@@ -71,8 +75,7 @@
                 <div class="col-md-3">
                     @if (Model.CaseOffenders.Count > 0)
                     {
-                        <h4>Offenders</h4>
-                        <br>
+                    <h4>Offenders</h4>
                         <table class="table">
                             <thead>
                                 <tr>
