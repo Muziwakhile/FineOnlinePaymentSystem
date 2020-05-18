@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace FineOnlinePaymentSystem.DataOperationsImplementation
 {
@@ -39,6 +40,7 @@ namespace FineOnlinePaymentSystem.DataOperationsImplementation
 
         public virtual void Update(T model)
         {
+            
             dbContext.Update<T>(model);
             dbContext.SaveChanges();
         }

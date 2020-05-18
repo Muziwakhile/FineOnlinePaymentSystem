@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Castle.Core.Internal;
 using FineOnlinePaymentSystem.Data;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.Models;
@@ -79,6 +80,26 @@ namespace FineOnlinePaymentSystem.Controllers
         [HttpPost]
         public IActionResult Edit(Case model)
         {
+
+            var ofresult = officer.SearchByForceNumber(model.Officer.ForceNumber);
+            model.OfficerID = ofresult.OfficerID;
+
+            if ( model.OffenceID > 0 || model.OfficerID > 0)
+            {
+
+                var fromdb = caseOps.GetById(model.CaseID);
+                
+
+                fromdb.CaseDescription = model.CaseDescription;
+                fromdb.CrimeLocation = model.CrimeLocation;
+                fromdb.DateOfArrest = model.DateOfArrest;
+                fromdb.DateOfCrime = model.DateOfCrime;
+                fromdb.OffenceID = model.OffenceID;
+                fromdb.OfficerID = model.OfficerID;
+                fromdb.CourtDate = model.CourtDate;
+                caseOps.Update(fromdb);
+            }
+           
             return RedirectToAction("Index");
         }
 
