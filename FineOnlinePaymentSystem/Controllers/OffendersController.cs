@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FineOnlinePaymentSystem.Controllers
 {
-    [Authorize(Roles ="SuperAdmin")]
+    //[Authorize(Roles ="SuperAdmin")]
     public class OffendersController : Controller
     {
         private readonly ApplicationDbContext context;
@@ -37,8 +37,17 @@ namespace FineOnlinePaymentSystem.Controllers
             if (pin != null)
             {
                 List<Offender> result = new List<Offender>();
-                result.Add(offenderOps.SearchByPin(pin));
-                return View(result);
+                var br = offenderOps.GetAll();
+                var r = br.Where(v => v.PIN.StartsWith(pin));
+                
+                if (r != null)
+                {
+                    return View(r);
+                }
+                else
+                {
+                    return View(r);
+                }
             }
             if (Status > 0)
             {
@@ -100,7 +109,11 @@ namespace FineOnlinePaymentSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                offenderOps.Update(offender);
+               var result = offenderOps.GetById(offender.OffenderID);
+                result.HomeAddress = offender.HomeAddress;
+                result.Name = offender.Name;
+                result.Surname = offender.Surname;
+                offenderOps.Update(result);
             }
             return RedirectToAction("Index");
         }

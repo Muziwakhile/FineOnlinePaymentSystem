@@ -19,6 +19,8 @@ namespace FineOnlinePaymentSystem.Models
         public string Surname { get; set; }
 
         [Required, Column(TypeName = "varchar(18)")]
+        [MinLength(12, ErrorMessage ="Invalid PIN Number")]
+        [MaxLength(15,ErrorMessage ="Invalid PIN")]
         public string PIN { get; set; }
 
         [Required]

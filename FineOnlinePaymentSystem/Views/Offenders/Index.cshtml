@@ -9,23 +9,26 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form class="form-inline"  asp-action="Index" method="get">
-    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-    
-        <input type="text" name="pin" class="form-control col-md-2  mr-1" placeholder="Search By PIN"/>
-        <input type ="submit" value="Search" class="btn btn-light" />
-        @*<span asp-validation-for="Name" class="text-danger"></span>*@
-   
-    </form>
 <form class="form-inline" asp-action="Index" method="get">
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
-    
 
-        <select name="Status" class="form-control col-md-2 mr-1" asp-items="@ViewBag.StatusID as SelectList"><option value="">Select Status</option> </select>
-        <input type="submit" value="Search" class="btn btn-light" />
-        @*<span asp-validation-for="Name" class="text-danger"></span>*@
-  
+    <input type="text" maxlength="15" name="pin" class="form-control col-md-2  mr-1" placeholder="Search By PIN" />
+    
+    <input type="submit" value="Search" class="btn btn-light" />
+    @*<span asp-validation-for="" class="text-danger"></span>*@
+
 </form>
+<form class="form-inline" asp-action="Index" method="get">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+
+    <select name="Status" class="form-control col-md-2 mr-1" asp-items="@ViewBag.StatusID as SelectList"><option value="">Select Status</option> </select>
+    <input type="submit" value="Search" class="btn btn-light" />
+    @*<span asp-validation-for="Name" class="text-danger"></span>*@
+
+</form>
+@if (Model != null)
+{
     <table class="table">
         <thead>
             <tr>
@@ -54,6 +57,7 @@
             </tr>
         </thead>
         <tbody>
+
             @foreach (var item in Model)
             {
                 <tr>
@@ -85,5 +89,8 @@
                     </td>
                 </tr>
             }
+           
+
         </tbody>
     </table>
+}
