@@ -13,6 +13,7 @@ namespace FineOnlinePaymentSystem.Models
         public int CaseStatusID { get; set; }
 
         [Required,Column(TypeName = "varchar(15)")]
+        [Display(Name = "Case Status Name")]
         public string Name { get; set; }
 
         public virtual List<Case> Cases { get; set; }

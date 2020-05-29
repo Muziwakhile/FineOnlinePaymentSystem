@@ -14,6 +14,7 @@ namespace FineOnlinePaymentSystem.Models
         public int OfficerID { get; set; }
 
         [Required, Column(TypeName = "varchar(25)")]
+        [Display(Name ="Officer Name")]
         public string Name { get; set; }
 
         [Required, Column(TypeName = "varchar(25)")]

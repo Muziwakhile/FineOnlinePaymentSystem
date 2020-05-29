@@ -13,6 +13,7 @@ namespace FineOnlinePaymentSystem.Models
         public int OffenseID { get; set; }
 
         [Required,Column(TypeName ="varchar(50)")]
+        [Display(Name = "Offence Name")]
         public string Name { get; set; }
 
         [Column(TypeName = "varchar(max)")]
