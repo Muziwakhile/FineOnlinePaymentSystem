@@ -1,0 +1,83 @@
+﻿@model FineOnlinePaymentSystem.Models.Case
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Case</h4>
+    <hr />
+    <div class="row col-12">
+        <dl class="row col-6">
+            <dt class="col-sm-2">
+                @Html.HiddenFor(model => model.CaseID)
+               
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CaseID)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CaseNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CaseNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CaseDescription)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CaseDescription)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CrimeLocation)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CrimeLocation)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateOfCrime)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateOfCrime)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.DateOfArrest)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.DateOfArrest)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CourtDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CourtDate)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Officer.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Officer.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Offence.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Offence.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CaseStatus.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CaseStatus.Name)
+            </dd>
+        </dl>
+        <div class="col-4"><partial name="_SearchPartial" model="Model.CaseOffenders"></div>
+    </div>
+   
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.CaseID}) |
+    <a asp-action="Index">Back to List</a>
+</div>

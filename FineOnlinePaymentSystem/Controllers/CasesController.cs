@@ -58,9 +58,11 @@ namespace FineOnlinePaymentSystem.Controllers
         [HttpPost]
         public IActionResult Create(Case model)
         {
+            
             model.CaseStatusID = 1;
             model.Officer = officer.SearchByForceNumber(model.Officer.ForceNumber);
             caseOps.Insert(model);
+
             return RedirectToAction("Index");
         }
 
@@ -103,6 +105,16 @@ namespace FineOnlinePaymentSystem.Controllers
             return RedirectToAction("Index");
         }
 
+
+
+
+        [HttpGet]
+        public IActionResult Details(int ID)
+        {
+            var result = caseOps.GetById(ID);
+            return View(result);
+        }
+
         [HttpGet]
         public IActionResult SearchByPin(string pin,int caseId)
         {
@@ -120,6 +132,25 @@ namespace FineOnlinePaymentSystem.Controllers
             }
            
         }
+
+
+        //Action for adding offender while creating a case(This feature is not complete)
+        //[HttpGet]
+        //public IActionResult SearchByPinCreate(string pin)
+        //{
+        //    List<Offender> offenders = new List<Offender>();
+        //    var result = offender.SearchByPin(pin);
+        //    if (result != null)
+        //    {
+        //        offenders.Add(result);
+        //        return PartialView("_SearchByPinPartial", offenders);
+        //    }
+        //    else
+        //    {
+        //        return Json(result);
+        //    }
+        //}
+
 
 
         [HttpGet]
