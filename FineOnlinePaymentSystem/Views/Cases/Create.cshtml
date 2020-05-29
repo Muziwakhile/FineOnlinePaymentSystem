@@ -34,9 +34,12 @@
                         <input asp-for="DateOfCrime" class="form-control" />
                         <span asp-validation-for="DateOfCrime" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group d-inline">
                         <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
+                    @*<div class="form-group d-inline">
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Add Offender</a>
+                    </div>*@
                 </div>
                 <div class="col-4">
                     <div class="form-group">
@@ -64,14 +67,46 @@
                             <select asp-for="CaseStatusID" class ="form-control" asp-items="ViewBag.CaseStatusID"></select>
                         </div>*@
                 </div>
+                <div class="col-md-4" id="offenders">
+
+                </div>
+
             </div>
         </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+
+    </div>
+</div>
+<div class="col-4">
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title align-left"> Add Offender</h3>
+                    <a href="#" class="close fa-align-right" data-dismiss="modal">&times;</a>
+                </div>
+                <div class="modal-body">
+                    <form class="form-inline" asp-action="SearchByPinCreate" method="get" id="pinForm">
+                        @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+                        <input type="text" name="pin" id="pin" class="form-control col-md-6  mr-1" placeholder="Search By PIN" />
+                        <input type="button" value="Add" class="btn btn-light" id="btnSubmit" />
+                        @*<span asp-validation-for="Name" class="text-danger"></span>*@
+
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -99,7 +134,26 @@
                 })
             }
         })
-    })
 
+
+        $("#btnSubmit").click(function () {
+            var data = $("#pinForm").serialize();
+            @*var caseId = @Model.CaseID;*@
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("SearchByPinCreate")?" + data,
+                success: function (response) {
+                    $("#offenders").html(response)
+                    $("#pin").val("");
+                    $("#myModal").modal('hide');
+                    @*@{ 
+                        ViewBag["offendernder1"] = ViewBag["Offenders"] as IEnumerable<Offender>;
+                    }*@
+                    
+                }
+            })
+        })
+
+    })
     </script>
 }
