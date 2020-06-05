@@ -117,10 +117,10 @@
 
     <script type="text/javascript">
     $(document).ready(function () {
-
+       
         $.ajax({
             type: "GET",
-            url: "@Url.Action("LoadCOF")",
+            url: "@Url.Action("LoadCOF2")",
             data: { ID: @Model.CaseID },
             cache: false,
             //dataType: "html",
@@ -145,7 +145,7 @@
     
                     $.ajax({
                         type: "GET",
-                        url: "@Url.Action("LoadCOF")",
+                        url: "@Url.Action("LoadCOF2")",
                         data: { ID: @Model.CaseID },
                         cache: false,
                         //dataType: "html",

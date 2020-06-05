@@ -115,6 +115,21 @@ namespace FineOnlinePaymentSystem.Controllers
             return View(result);
         }
 
+
+
+        [HttpGet]
+        public IActionResult Delete(int caseID, int offenderID)
+        {
+            //var caseID = (int)ViewBag.CaseID;
+            caseof.Delete(new CaseOffender { CaseID = caseID, OffenderID = offenderID });
+            var model = caseOps.GetById(caseID);
+
+            return  RedirectToAction("Edit",new { ID = caseID });
+        }
+
+
+
+
         [HttpGet]
         public IActionResult SearchByPin(string pin,int caseId)
         {
@@ -158,6 +173,7 @@ namespace FineOnlinePaymentSystem.Controllers
         {
             var cofmodel= caseof.GetByCaseIDOnly(ID);
 
+            
             if (cofmodel != null)
             {
                 return PartialView("_SearchPartial", cofmodel);
@@ -167,6 +183,25 @@ namespace FineOnlinePaymentSystem.Controllers
                 return null;
             }
            
+        }
+
+
+
+        [HttpGet]
+        public IActionResult LoadCOF2(int ID)
+        {
+            var cofmodel = caseof.GetByCaseIDOnly(ID);
+
+
+            if (cofmodel != null)
+            {
+                return PartialView("_SearchPartial2", cofmodel);
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
 
