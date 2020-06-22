@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using FineOnlinePaymentSystem.DataOpsInterfaces;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
+using FineOnlinePaymentSystem.BusinessLogicInterfaces;
+using FineOnlinePaymentSystem.BusinessLgicImplementations;
 
 namespace FineOnlinePaymentSystem
 {
@@ -38,7 +40,9 @@ namespace FineOnlinePaymentSystem
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
-            //services.AddSingleton<IdataOps, CrudOperations<ApplicationDbContext>>();
+            services.AddSingleton(typeof(IdataOps<>),typeof(CrudOperations<>));
+            services.AddSingleton<ICheckAmortization, CheckAmortization>();
+            services.AddSingleton<IAmortizationCalculate, AmortizationCalculate>();
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
