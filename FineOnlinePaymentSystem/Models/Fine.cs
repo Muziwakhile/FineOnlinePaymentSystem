@@ -13,7 +13,7 @@ namespace FineOnlinePaymentSystem.Models
         public int FineID { get; set; }
 
         [Required,Column(TypeName ="Decimal(10,2)")]
-        public float Amount { get; set; }
+        public decimal Amount { get; set; }
 
 
         public int CaseID { get; set; }
