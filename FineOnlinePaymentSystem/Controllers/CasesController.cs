@@ -122,7 +122,7 @@ namespace FineOnlinePaymentSystem.Controllers
         {
             //var caseID = (int)ViewBag.CaseID;
             caseof.Delete(new CaseOffender { CaseID = caseID, OffenderID = offenderID });
-            var model = caseOps.GetById(caseID);
+            //var model = caseOps.GetById(caseID);
 
             return  RedirectToAction("Edit",new { ID = caseID });
         }
