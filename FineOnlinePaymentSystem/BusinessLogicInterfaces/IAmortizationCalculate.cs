@@ -10,5 +10,6 @@ namespace FineOnlinePaymentSystem.BusinessLogicInterfaces
     {
         decimal AmortizationAmount(Case _case,Fine fine);
         int DaysOverstayed(Case _case);
+        int AmortizationPercent(Case _case);
     }
 }

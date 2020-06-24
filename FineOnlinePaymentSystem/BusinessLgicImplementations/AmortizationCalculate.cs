@@ -40,5 +40,20 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
 
             return daysOverstayed;
         }
+
+        public int AmortizationPercent(Case _case)
+        {
+            int totaldays = ((TimeSpan)(_case.CourtDate - _case.DateOfArrest)).Days;
+            daysOverstayed = totaldays - daysbeforeAmortization;
+
+            return PercentPerday * daysOverstayed;
+        }
+
+        public decimal AmountPayable(Case _case, Fine fine)
+        {
+            decimal amortamount = AmortizationAmount(_case, fine);
+
+            return fine.Amount - amortamount;
+        }
     }
 }
