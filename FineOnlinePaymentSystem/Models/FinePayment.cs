@@ -35,5 +35,8 @@ namespace FineOnlinePaymentSystem.Models
 
         public int FineID { get; set; }
         public virtual Fine Fine { get; set; }
+
+        public int FinePaymentStatusID { get; set; }
+        public virtual FinePaymentStatus FinePaymentStatus { get; set; }
     }
 }
