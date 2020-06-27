@@ -40,9 +40,9 @@ namespace FineOnlinePaymentSystem
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
-            services.AddSingleton(typeof(IdataOps<>),typeof(CrudOperations<>));
-            services.AddSingleton<ICheckAmortization, CheckAmortization>();
-            services.AddSingleton<IAmortizationCalculate, AmortizationCalculate>();
+            services.AddScoped(typeof(IdataOps<>),typeof(CrudOperations<>));
+            services.AddScoped<ICheckAmortization, CheckAmortization>();
+            services.AddScoped<IAmortizationCalculate, AmortizationCalculate>();
             //services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
