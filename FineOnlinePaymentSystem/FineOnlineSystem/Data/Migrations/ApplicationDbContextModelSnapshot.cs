@@ -85,7 +85,8 @@ namespace FineOnlinePaymentSystem.Data.Migrations
 
                     b.Property<string>("CaseDescription")
                         .IsRequired()
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("varchar(max)")
+                        .HasMaxLength(50000);
 
                     b.Property<int>("CaseNumber")
                         .HasColumnType("int");
@@ -217,6 +218,9 @@ namespace FineOnlinePaymentSystem.Data.Migrations
                     b.Property<int>("FineID")
                         .HasColumnType("int");
 
+                    b.Property<int>("FinePaymentStatusID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Paymentdate")
                         .HasColumnType("datetime2");
 
@@ -229,9 +233,26 @@ namespace FineOnlinePaymentSystem.Data.Migrations
 
                     b.HasIndex("FineID");
 
+                    b.HasIndex("FinePaymentStatusID");
+
                     b.HasIndex("RelativeID");
 
                     b.ToTable("FinePayments");
+                });
+
+            modelBuilder.Entity("FineOnlinePaymentSystem.Models.FinePaymentStatus", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("FinePaymentStatuses");
                 });
 
             modelBuilder.Entity("FineOnlinePaymentSystem.Models.Offence", b =>
@@ -324,7 +345,8 @@ namespace FineOnlinePaymentSystem.Data.Migrations
 
                     b.Property<string>("PIN")
                         .IsRequired()
-                        .HasColumnType("varchar(18)");
+                        .HasColumnType("varchar(18)")
+                        .HasMaxLength(15);
 
                     b.Property<int>("StatusID")
                         .HasColumnType("int");
@@ -717,6 +739,12 @@ namespace FineOnlinePaymentSystem.Data.Migrations
                     b.HasOne("FineOnlinePaymentSystem.Models.Fine", "Fine")
                         .WithMany("FinePayments")
                         .HasForeignKey("FineID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FineOnlinePaymentSystem.Models.FinePaymentStatus", "FinePaymentStatus")
+                        .WithMany("FinePayments")
+                        .HasForeignKey("FinePaymentStatusID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

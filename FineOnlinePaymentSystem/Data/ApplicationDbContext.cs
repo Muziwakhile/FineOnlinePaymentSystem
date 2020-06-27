@@ -29,6 +29,8 @@ namespace FineOnlinePaymentSystem.Data
         public DbSet<OffenderStatus> OffenderStatuses { get; set; }
         public DbSet<CaseStatus> CaseStatuses { get; set; }
 
+        public DbSet<FinePaymentStatus> FinePaymentStatuses { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -140,6 +142,22 @@ namespace FineOnlinePaymentSystem.Data
                     DaysBeforeAmortization = 3
                 }
                 );
+
+
+
+            //seeding FinePaymentStatus
+            //builder.Entity<FinePaymentStatus>().HasData(
+            //    new FinePaymentStatus
+            //    {
+            //        ID = 1,
+            //        Name = "Pending"   
+            //    },
+            //     new FinePaymentStatus
+            //     {
+            //         ID = 2,
+            //         Name = "Paid"
+            //     }
+            //    ) ; 
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
