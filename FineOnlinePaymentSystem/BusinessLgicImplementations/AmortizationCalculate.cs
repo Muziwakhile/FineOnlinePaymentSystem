@@ -28,7 +28,9 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
             daysOverstayed = totaldays - daysbeforeAmortization;
             int percent = PercentPerday * daysOverstayed;
 
-            return (percent/100 * fine.Amount);
+            decimal result =((decimal)percent/100m );
+
+            return (decimal)result * (decimal)fine.Amount;
         }
 
        

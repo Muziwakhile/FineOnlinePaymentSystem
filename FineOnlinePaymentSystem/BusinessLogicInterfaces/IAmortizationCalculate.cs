@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace FineOnlinePaymentSystem.BusinessLogicInterfaces
 {
-    interface IAmortizationCalculate
+    public interface IAmortizationCalculate
     {
         decimal AmortizationAmount(Case _case,Fine fine);
         int DaysOverstayed(Case _case);
         int AmortizationPercent(Case _case);
+        decimal AmountPayable(Case _case, Fine fine);
     }
 }
