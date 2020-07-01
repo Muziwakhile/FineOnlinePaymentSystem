@@ -17,10 +17,10 @@ namespace FineOnlinePaymentSystem.Models
         public DateTime Paymentdate { get; set; }
 
         [Required,Column(TypeName = "Decimal(10,2)"),Display(Name ="Amortization Amount")]
-        public float AmortizationAmount { get; set; }
+        public decimal AmortizationAmount { get; set; }
 
         [Required,Display(Name ="Amount Payable"),Column(TypeName ="Decimal(10,2)")]
-        public float AmountPayable { get; set; }
+        public decimal AmountPayable { get; set; }
 
         [Required,Display(Name ="Proof of Payment")]
         public byte[] Attachment { get; set; }

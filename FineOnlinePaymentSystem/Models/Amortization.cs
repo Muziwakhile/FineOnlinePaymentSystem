@@ -19,7 +19,7 @@ namespace FineOnlinePaymentSystem.Models
         public int Percent { get; set; }
 
         [Required,Column(TypeName ="Decimal(10,2)"),Display(Name = "Amortization Amount")]
-        public float AmortizationAmount { get; set; }
+        public decimal AmortizationAmount { get; set; }
 
 
         public int CaseID { get; set; }
