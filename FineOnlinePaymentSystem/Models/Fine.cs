@@ -24,6 +24,10 @@ namespace FineOnlinePaymentSystem.Models
         public virtual Offender Offender { get; set; }
 
 
+        public int FineStatusID { get; set; }
+        public virtual FineStatus FineStatus { get; set; }
+
+
         public virtual List<Amortization> Amortizations { get; set; }
         public virtual List<FinePayment> FinePayments { get; set; }
     }
