@@ -30,7 +30,7 @@ namespace FineOnlinePaymentSystem.Controllers
             caseof = new CaseOffenderOps(context);
         }
 
-
+        [HttpGet]
         public IActionResult Index(int status,int caseNumber)
         {
             var c = new List<Case>();
@@ -47,7 +47,7 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
 
-
+        [HttpGet]
         public IActionResult Create()
         {
             ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
