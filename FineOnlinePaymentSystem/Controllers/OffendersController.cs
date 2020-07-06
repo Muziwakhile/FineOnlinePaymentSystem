@@ -31,6 +31,7 @@ namespace FineOnlinePaymentSystem.Controllers
         [Route("Offenders")]
         [Route("Offenders/index")]
         //[Route("Offenders/Index/{Id?}")]
+        [HttpGet]
         public IActionResult Index(string pin,int Status)
         {
             ViewBag.StatusID = new SelectList(status.GetAll(), "StatusID", "Name");
@@ -61,7 +62,7 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
         [HttpGet]
-        [Route("Offenders/Index/{Id?}")]
+        //[Route("Offenders/Index/{Id?}")]
         //[ActionName("Index")]
         public IActionResult Index(int id)
         {
@@ -73,13 +74,14 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
 
+        [Route("Offenders/Create")]
         [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
 
-
+        
         [HttpPost]
         public IActionResult Create(Offender offender)
         {
