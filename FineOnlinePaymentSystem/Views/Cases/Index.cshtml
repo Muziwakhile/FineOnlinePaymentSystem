@@ -9,6 +9,25 @@
 <p>
     <a asp-action="Create">Create Case</a>
 </p>
+<form class="form-inline" asp-action="Index" method="get">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+    <input type="text" id="caseNumber" maxlength="15" name="caseNumber" class="form-control col-md-2  mr-1" placeholder="Search By Case Number" />
+
+    <input type="submit" value="Search" class="btn btn-light" />
+    @*<span asp-validation-for="" class="text-danger"></span>*@
+
+</form>
+<form class="form-inline" asp-action="Index" method="get">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+
+    <select name="Status" class="form-control col-md-2 mr-1" asp-items="@ViewBag.Status as SelectList"><option value="">Select Status</option> </select>
+    <input type="submit" value="Search" class="btn btn-light" />
+    @*<span asp-validation-for="Name" class="text-danger"></span>*@
+
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -39,45 +58,81 @@
             <th>
                 @Html.DisplayNameFor(model => model.CaseStatus)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CaseNumber)
-            </td>
-            <td style="width:400px">
-                @Html.DisplayFor(modelItem => item.CaseDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CrimeLocation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfCrime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateOfArrest)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CourtDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Officer.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Offence.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CaseStatus.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CaseID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.CaseID">View</a> |
-                @*<a asp-action="Delete" asp-route-id="@item.CaseID">Delete</a>*@
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CaseNumber)
+                </td>
+                <td style="width:400px">
+                    @Html.DisplayFor(modelItem => item.CaseDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CrimeLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfCrime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfArrest)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CourtDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Officer.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Offence.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CaseStatus.Name)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CaseID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.CaseID">View</a> |
+                    @*<a asp-action="Delete" asp-route-id="@item.CaseID">Delete</a>*@
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $("#caseNumber").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("ListByCaseNUmber2")",
+                    data: { caseNumber: $("#caseNumber").val() },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+
+                            return { value: item };
+                        }));
+
+                    },
+
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                })
+            }
+        })
+    })
+</script>
+}
+
