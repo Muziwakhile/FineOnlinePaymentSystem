@@ -6,6 +6,7 @@ using Castle.Core.Internal;
 using FineOnlinePaymentSystem.Data;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -13,6 +14,8 @@ namespace FineOnlinePaymentSystem.Controllers
 {
     public class CasesController : Controller
     {
+
+        //private varables that will be used to access differe CRUD operations
         private readonly ApplicationDbContext context;
         private readonly CaseOps caseOps;
         private readonly OffenderOps offender;
@@ -20,6 +23,8 @@ namespace FineOnlinePaymentSystem.Controllers
         private readonly OfficerOps officer;
         private readonly CaseOffenderOps caseof;
 
+
+        //Contractor that loads initialies all the private fileds above
         public CasesController(ApplicationDbContext _context)
         {
             context = _context;
@@ -30,10 +35,21 @@ namespace FineOnlinePaymentSystem.Controllers
             caseof = new CaseOffenderOps(context);
         }
 
+
+        //these are 2 routes that will redirect to this action
+        [Route("Cases")]
+        [Route("Cases/index")]
         [HttpGet]
+        //Action method that will be used to display all the cases
+        //this action will also be used to filter searches according to either the status or the case number
         public IActionResult Index(int status,int caseNumber)
         {
+
+            ViewBag.Status = new SelectList(context.CaseStatuses.ToList<CaseStatus>(), "CaseStatusID", "Name");
             var c = new List<Case>();
+
+            //check if the status argument is given so that the list can be filtered by the status
+            //Else if the case number arfument so that the list can filter using the casenumber
             if (status > 0)
             {
                 return View(caseOps.SearchByStatus(status));
@@ -46,8 +62,9 @@ namespace FineOnlinePaymentSystem.Controllers
             return View(caseOps.GetAll());
         }
 
-
+        [Route("Cases/Create")]
         [HttpGet]
+        [Authorize(Roles ="Officer")]
         public IActionResult Create()
         {
             ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
@@ -56,6 +73,7 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Officer")]
         public IActionResult Create(Case model)
         {
             
@@ -118,6 +136,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles ="SuperAdmin")]
         public IActionResult Delete(int caseID, int offenderID)
         {
             //var caseID = (int)ViewBag.CaseID;
@@ -220,6 +239,25 @@ namespace FineOnlinePaymentSystem.Controllers
             else
             {
                 return Json( result);
+            }
+
+        }
+
+
+
+        [HttpGet]
+        public JsonResult ListByCaseNUmber2(int caseNumber)
+        {
+
+            var result = caseOps.ListByCaseNUmber2(caseNumber);
+
+            if (result != null)
+            {
+                return Json(result);
+            }
+            else
+            {
+                return Json(result);
             }
 
         }
