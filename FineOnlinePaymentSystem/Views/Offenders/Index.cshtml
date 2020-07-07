@@ -7,12 +7,12 @@
 <h1>Our List of Offenders</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New Offender</a>
 </p>
 <form class="form-inline" asp-action="Index" method="get">
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
 
-    <input type="text" maxlength="15" name="pin" class="form-control col-md-2  mr-1" placeholder="Search By PIN" />
+    <input type="text"  maxlength="15" name="pin" class="form-control col-md-2  mr-1" placeholder="Search By PIN" />
     
     <input type="submit" value="Search" class="btn btn-light" />
     @*<span asp-validation-for="" class="text-danger"></span>*@
@@ -85,7 +85,11 @@
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.OffenderID">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.OffenderID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.OffenderID">Delete</a>
+                        @if (User.IsInRole("SuperAdmin"))
+                        {
+                            <a asp-action="Delete" asp-route-id="@item.OffenderID">Delete</a>
+                        }
+
                     </td>
                 </tr>
             }
