@@ -13,14 +13,17 @@
         "jquery-ui.min.js",
         "themes/base/jquery-ui.min.css"
       ]
+    },
+    {
+      "library": "autocomplete.js@0.37.1",
+      "destination": "wwwroot/lib/autocomplete.js/",
+      "files": [
+        "autocomplete.min.js"
+      ]
+    },
+    {
+      "library": "noti.js@1.0.2",
+      "destination": "wwwroot/lib/notify/noti.js/"
     }
-  ,
-{
-  "library": "autocomplete.js@0.37.1",
-  "destination": "wwwroot/lib/autocomplete.js/",
-  "files": [
-    "autocomplete.min.js"
   ]
-}
-]
 }
