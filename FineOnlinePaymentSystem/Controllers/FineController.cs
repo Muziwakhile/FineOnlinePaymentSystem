@@ -6,6 +6,7 @@ using FineOnlinePaymentSystem.BusinessLogicInterfaces;
 using FineOnlinePaymentSystem.Data;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FineOnlinePaymentSystem.Controllers
@@ -29,17 +30,28 @@ namespace FineOnlinePaymentSystem.Controllers
             caseOps = new CaseOps(_context);
             caseOffenders = new CaseOffenderOps(_context);
             offenders = new OffenderOps(_context);
-            crudOps = new CrudOperations<Fine>(_context);
+            crudOps = new FineOps(_context);
             crudOps2 = new CrudOperations<Amortization>(_context);
-        }
-        public IActionResult Index()
-        {
-
-            return View();
         }
 
 
         [HttpGet]
+        public IActionResult Index(int caseNumber)
+        {
+            if (caseNumber != 0 && caseNumber > 0 )
+            {
+                var _case = caseOps.SearchByCaseNumber(caseNumber);
+                var fine = crudOps.GetAll().Where(f => f.CaseID == _case.CaseID).ToList<Fine>();
+
+                return View(fine);
+            }
+            var results = crudOps.GetAll();
+            return View(results);
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles ="Officer")]
         public IActionResult CreateFine()
         {
             return View();
@@ -48,6 +60,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Officer")]
         public IActionResult CreateFine(Fine fine)
         {
 
