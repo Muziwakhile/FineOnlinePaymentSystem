@@ -12,7 +12,7 @@ namespace FineOnlinePaymentSystem.Models
         [Key]
         public int CaseID { get; set; }
 
-        [Required, Display(Name ="Case Number"),MinLength(7)]
+        [Required, Display(Name ="Case Number")]
         public int CaseNumber { get; set; }
         
         [Required,Column(TypeName ="varchar(max)"),Display(Name ="Case Description"), MaxLength(50000)]
