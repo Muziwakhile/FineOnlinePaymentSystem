@@ -51,7 +51,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles ="Officer")]
         public IActionResult CreateFine()
         {
             return View();
@@ -60,7 +60,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Officer")]
         public IActionResult CreateFine(Fine fine)
         {
 
@@ -94,21 +94,18 @@ namespace FineOnlinePaymentSystem.Controllers
                     };
 
                     crudOps2.Insert(amortization);
-                    ViewBag.Message = "Fine captured successfuly";
-                    ViewBag.MessageType = "Success";
+
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    ViewBag.Message = "Incomplete Case details: Date of arrest or court not captured";
-                    ViewBag.MessageType = "Warning";
+                    ViewData["Message"] = "Incomplete Case details: Date of arrest or court not captured";
                     return View();
                 }
             }
             else
             {
-                ViewBag.Message = "Offender not found in the Specified Case";
-                ViewBag.MessageType = "Warning";
+                ViewData["Message"] = "Offender not found in the Specified Case";
                 return View();
             }
 
