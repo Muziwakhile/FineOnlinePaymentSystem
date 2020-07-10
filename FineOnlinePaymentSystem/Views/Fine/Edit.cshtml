@@ -1,0 +1,81 @@
+﻿@model FineOnlinePaymentSystem.Models.Fine
+
+@*@{
+    ViewData["Title"] = "Edit";
+}*@
+
+<h1>Edit Fine</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FineID" />
+            <input type="hidden" asp-for="Case.CaseNumber" id="caseNumber" />
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.CaseNumber" class="control-label"></label>
+                <input asp-for="Case.CaseNumber" class="form-control" readonly />
+                <span asp-validation-for="Case.CaseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Offender.PIN" class="control-label"></label>
+                <input id="PIN" asp-for="@Model.Offender.PIN" class="form-control" readonly/>
+                <span asp-validation-for="@Model.Offender.PIN" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+            <label asp-for="FineStatusID" class="control-label"></label>
+            <select asp-for="FineStatusID" class="form-control" asp-items="ViewBag.FineStatusID"></select>
+            <span asp-validation-for="FineStatusID" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+
+        $("#PIN").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("ListByPIN")",
+                    data: { PIN: $("#PIN").val(), CaseNumber: $("#caseNumber").val() },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+
+                            return { value: item };
+                        }));
+
+                    },
+
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                })
+            }
+        })
+    })
+
+</script>
+}

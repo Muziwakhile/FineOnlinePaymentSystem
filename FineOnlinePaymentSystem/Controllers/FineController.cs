@@ -66,53 +66,88 @@ namespace FineOnlinePaymentSystem.Controllers
 
             fine.CaseID = caseOps.SearchByCaseNumber(fine.Case.CaseNumber).CaseID;
             var offender = offenders.SearchByPin(fine.Offender.PIN);
-            var _caseOffender = context.CaseOffenders.Where<CaseOffender>(c => c.CaseID == fine.CaseID && c.OffenderID == offender.OffenderID).FirstOrDefault<CaseOffender>();
 
-            if (_caseOffender != null)
+            if (offender != null)
             {
-                fine.OffenderID = offender.OffenderID;
-                fine.FineStatusID = 1;
-                var _case = caseOps.GetById(fine.CaseID);
+                var _caseOffender = context.CaseOffenders.Where<CaseOffender>(c => c.CaseID == fine.CaseID && c.OffenderID == offender.OffenderID).FirstOrDefault<CaseOffender>();
 
-                if (checkAmortization.CheckCaseDates(_case))
+                if (_caseOffender != null)
                 {
-                    
-                    crudOps.Insert(new Fine { 
-                    Amount = fine.Amount,
-                    CaseID = _case.CaseID,
-                    OffenderID = offender.OffenderID,
-                    FineStatusID = fine.FineStatusID
-                    });
+                    fine.OffenderID = offender.OffenderID;
+                    fine.FineStatusID = 1;
+                    var _case = caseOps.GetById(fine.CaseID);
 
-                    var amortization = new Amortization
+                    if (checkAmortization.CheckCaseDates(_case))
                     {
-                        FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
-                        CaseID = _case.CaseID,
-                        DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
-                        Percent = amortizationCalculate.AmortizationPercent(_case),
-                        AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, fine)
-                    };
 
-                    crudOps2.Insert(amortization);
-                    ViewBag.Message = "Fine captured successfuly";
-                    ViewBag.MessageType = "Success";
-                    return RedirectToAction("Index");
+                        crudOps.Insert(new Fine
+                        {
+                            Amount = fine.Amount,
+                            CaseID = _case.CaseID,
+                            OffenderID = offender.OffenderID,
+                            FineStatusID = fine.FineStatusID
+                        });
+
+                        var amortization = new Amortization
+                        {
+                            FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
+                            CaseID = _case.CaseID,
+                            DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
+                            Percent = amortizationCalculate.AmortizationPercent(_case),
+                            AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, fine)
+                        };
+
+                        crudOps2.Insert(amortization);
+                        ViewBag.Message = "Fine captured successfuly";
+                        ViewBag.MessageType = "Success";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Incomplete Case details: Date of arrest or court not captured";
+                        ViewBag.MessageType = "Warning";
+                        return View();
+                    }
                 }
                 else
                 {
-                    ViewBag.Message = "Incomplete Case details: Date of arrest or court not captured";
+                    ViewBag.Message = "Offender not found in the Specified Case";
                     ViewBag.MessageType = "Warning";
                     return View();
                 }
             }
             else
             {
-                ViewBag.Message = "Offender not found in the Specified Case";
+                ViewBag.Message = "Offender does not exist in our database";
                 ViewBag.MessageType = "Warning";
                 return View();
             }
+            
 
         }
+
+
+
+
+        [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult Edit(int id)
+        {
+           
+            return View(crudOps.GetById(id));
+        }
+
+
+        //[HttpPost]
+        //[Authorize(Roles = "SuperAdmin")]
+        //public IActionResult Edit(Fine _fine)
+        //{
+        //    return View();
+        //}
+
+
+
+
 
         [HttpGet]
         public JsonResult ListByCaseNUmber2(int caseNumber)
