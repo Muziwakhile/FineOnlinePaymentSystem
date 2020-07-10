@@ -1,22 +1,20 @@
 ﻿@model FineOnlinePaymentSystem.Models.Fine
 
 @{
-    ViewData["Title"] = "CreateFine";
+    ViewData["Title"] = "Create New Fine";
 }
 
-<h1>CreateFine</h1>
 
-<h4>Fine</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateFine">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
-                <label asp-for="FineID" class="control-label"></label>
-                <input asp-for="FineID" class="form-control" />
-                <span asp-validation-for="FineID" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="FineID" class="control-label"></label>
+                    <input asp-for="FineID" class="form-control" />
+                    <span asp-validation-for="FineID" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />
@@ -46,27 +44,38 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
-<script type="text/javascript">
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+
+            $(".toast").toast('show')
+
+        </script>
+    }
+    <script type="text/javascript">
+
+
+
     $(document).ready(function () {
 
 
         $("#CaseID").autocomplete({
-            source: function (request,response) {
+            source: function (request, response) {
                 $.ajax({
                     type: "GET",
                     url: "@Url.Action("ListByCaseNUmber2")",
                     data: { caseNumber: $("#CaseID").val() },
-                    cache:false,
+                    cache: false,
                     dataType: "json",
                     success: function (data) {
                         response($.map(data, function (item) {
 
-                            return { value: item} ;
+                            return { value: item };
                         }));
 
                     },
 
-                    error: function  (xhr,status,error) {
+                    error: function (xhr, status, error) {
                         alert("Error");
                     }
                 })
@@ -78,27 +87,30 @@
 
 
         $("#PIN").autocomplete({
-            source: function (request,response) {
+            source: function (request, response) {
                 $.ajax({
                     type: "GET",
                     url: "@Url.Action("ListByPIN")",
-                    data: { PIN: $("#PIN").val(),CaseNumber: $("#CaseID").val() },
-                    cache:false,
+                    data: { PIN: $("#PIN").val(), CaseNumber: $("#CaseID").val() },
+                    cache: false,
                     dataType: "json",
                     success: function (data) {
                         response($.map(data, function (item) {
 
-                            return { value: item} ;
+                            return { value: item };
                         }));
 
                     },
 
-                    error: function  (xhr,status,error) {
+                    error: function (xhr, status, error) {
                         alert("Error");
                     }
                 })
             }
         })
+
+
+
     })
-</script>
+    </script>
 }
