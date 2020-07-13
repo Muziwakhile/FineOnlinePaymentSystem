@@ -38,7 +38,7 @@ namespace FineOnlinePaymentSystem.Controllers
         [HttpGet]
         public IActionResult Index(int caseNumber)
         {
-            if (caseNumber != 0 && caseNumber > 0 )
+            if (caseNumber != 0 && caseNumber > 0)
             {
                 var _case = caseOps.SearchByCaseNumber(caseNumber);
                 var fine = crudOps.GetAll().Where(f => f.CaseID == _case.CaseID).ToList<Fine>();
@@ -101,7 +101,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
                             crudOps2.Insert(amortization);
                         }
-                       
+
                         ViewBag.Message = "Fine captured successfuly";
                         ViewBag.MessageType = "Success";
                         return RedirectToAction("Index");
@@ -126,7 +126,7 @@ namespace FineOnlinePaymentSystem.Controllers
                 ViewBag.MessageType = "Warning";
                 return View();
             }
-            
+
 
         }
 
@@ -137,7 +137,7 @@ namespace FineOnlinePaymentSystem.Controllers
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult Edit(int id)
         {
-           
+
             return View(crudOps.GetById(id));
         }
 
@@ -146,7 +146,24 @@ namespace FineOnlinePaymentSystem.Controllers
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult Edit(Fine _fine)
         {
-            return View();
+            var _case = caseOps.GetById(_fine.CaseID);
+
+            if (checkAmortization.CheckAmortizationStatus(_case))
+            {
+                var amortizationUpdate = crudOps2.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+
+                amortizationUpdate.DaysOverstayed = amortizationCalculate.DaysOverstayed(_case);
+                amortizationUpdate.Percent = amortizationCalculate.AmortizationPercent(_case);
+                amortizationUpdate.AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, _fine);
+
+                crudOps2.Update(amortizationUpdate);
+            }
+
+            var fineUpdate = crudOps.GetById(_fine.FineID);
+            fineUpdate.Amount = _fine.Amount;
+
+            crudOps.Update(fineUpdate);
+            return RedirectToAction("index");
         }
 
 

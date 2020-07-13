@@ -13,6 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="FineID" />
             <input type="hidden" asp-for="Case.CaseNumber" id="caseNumber" />
+            <input type="hidden" asp-for="CaseID"  />
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
                 <input asp-for="Amount" class="form-control" />
@@ -25,7 +26,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="@Model.Offender.PIN" class="control-label"></label>
-                <input id="PIN" asp-for="@Model.Offender.PIN" class="form-control" readonly/>
+                <input id="PIN" asp-for="@Model.Offender.PIN" class="form-control" readonly />
                 <span asp-validation-for="@Model.Offender.PIN" class="text-danger"></span>
             </div>
 
