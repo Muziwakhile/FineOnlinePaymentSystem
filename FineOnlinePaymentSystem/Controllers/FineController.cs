@@ -88,16 +88,20 @@ namespace FineOnlinePaymentSystem.Controllers
                             FineStatusID = fine.FineStatusID
                         });
 
-                        var amortization = new Amortization
+                        if (checkAmortization.CheckAmortizationStatus(_case))
                         {
-                            FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
-                            CaseID = _case.CaseID,
-                            DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
-                            Percent = amortizationCalculate.AmortizationPercent(_case),
-                            AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, fine)
-                        };
+                            var amortization = new Amortization
+                            {
+                                FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
+                                CaseID = _case.CaseID,
+                                DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
+                                Percent = amortizationCalculate.AmortizationPercent(_case),
+                                AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, fine)
+                            };
 
-                        crudOps2.Insert(amortization);
+                            crudOps2.Insert(amortization);
+                        }
+                       
                         ViewBag.Message = "Fine captured successfuly";
                         ViewBag.MessageType = "Success";
                         return RedirectToAction("Index");
@@ -138,12 +142,12 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
 
-        //[HttpPost]
-        //[Authorize(Roles = "SuperAdmin")]
-        //public IActionResult Edit(Fine _fine)
-        //{
-        //    return View();
-        //}
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult Edit(Fine _fine)
+        {
+            return View();
+        }
 
 
 
