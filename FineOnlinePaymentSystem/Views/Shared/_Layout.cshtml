@@ -49,6 +49,14 @@
                                     </div>
                                 </li>
                                 <li class="nav-item dropdown text-dark">
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Fines</a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" asp-controller="Fine" asp-action="Index">View Fines</a>
+                                        <a class="dropdown-item" href="#">Fine Payments</a>
+                                        @*<a class="dropdown-item" href="#">Link 3</a>*@
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown text-dark">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Administrative Tasks</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-area="Identity" asp-page="/Account/RegisterAdministrator">Add Administrator</a>
@@ -90,7 +98,7 @@
                                 <li class="nav-item dropdown text-dark">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Fine Payment</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">View Fines</a>
+                                        <a class="dropdown-item" href="#">Search For Fine</a>
                                         <a class="dropdown-item" href="#">Pay Fine</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
