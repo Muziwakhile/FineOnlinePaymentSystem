@@ -88,8 +88,7 @@ namespace FineOnlinePaymentSystem.Controllers
                             FineStatusID = fine.FineStatusID
                         });
 
-                        if (checkAmortization.CheckAmortizationStatus(_case))
-                        {
+                      
                             var amortization = new Amortization
                             {
                                 FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
@@ -100,7 +99,7 @@ namespace FineOnlinePaymentSystem.Controllers
                             };
 
                             crudOps2.Insert(amortization);
-                        }
+                        
 
                         ViewBag.Message = "Fine captured successfuly";
                         ViewBag.MessageType = "Success";
