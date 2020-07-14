@@ -1,0 +1,179 @@
+﻿@model IEnumerable<FineOnlinePaymentSystem.Models.FinePayment>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div style="position: absolute; top: 0; right: 0; margin-top:70px">
+    <div class="toast" id="toast1" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+        <div class="toast-header">
+            <img src="" class="rounded mr-2" alt="...">
+            <strong class="mr-auto">@ViewBag.MessageType</strong>
+            <small>just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            @ViewBag.Message
+        </div>
+    </div>
+</div>
+
+<form class="form-inline" asp-action="Index" method="get">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+    <input type="text" id="caseNumber" maxlength="15" name="caseNumber" class="form-control col-md-2  mr-2" placeholder="Enter Case Number" />
+    <input type="text" id="pin" maxlength="15" name="pin" class="form-control col-md-2  mr-2" placeholder="Enter Offender PIN" />
+
+    <input type="submit" value="Search" class="btn btn-light" />
+    @*<span asp-validation-for="" class="text-danger"></span>*@
+
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fine.Offender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fine.Case)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fine)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmortizationAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountPayable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Relative)
+            </th>
+            @*<th>
+                @Html.DisplayNameFor(model => model.Amortization)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinePaymentStatus)
+            </th>*@
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fine.Offender.Name )
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fine.Case.CaseNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fine.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AmortizationAmount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AmountPayable)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Relative.Name)
+                </td>
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Fine.FineID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FinePaymentStatus.ID)
+                </td>*@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.FinePaymentID">Pay Fine</a> |
+                    @*<a asp-action="Details" asp-route-id="@item.FinePaymentID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.FinePaymentID">Delete</a>*@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+
+            $(".toast").toast('show')
+
+        </script>
+    }
+    <script type="text/javascript">
+
+
+
+    @*$(document).ready(function () {
+
+
+        $("#CaseID").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("ListByCaseNUmber2")",
+                    data: { caseNumber: $("#CaseID").val() },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+
+                            return { value: item };
+                        }));
+
+                    },
+
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                })
+            }
+        })
+
+
+
+
+
+        $("#PIN").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("ListByPIN")",
+                    data: { PIN: $("#PIN").val(), CaseNumber: $("#CaseID").val() },
+                    cache: false,
+                    dataType: "json",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+
+                            return { value: item };
+                        }));
+
+                    },
+
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                })
+            }
+        })
+
+
+
+    })*@
+    </script>
+}
