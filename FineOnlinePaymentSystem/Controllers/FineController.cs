@@ -108,7 +108,7 @@ namespace FineOnlinePaymentSystem.Controllers
                     }
                     else
                     {
-                        ViewBag.Message = "Incomplete Case details: Date of arrest or court not captured";
+                        ViewBag.Message = "Incomplete Case details: Date of arrest or court date was not captured";
                         ViewBag.MessageType = "Warning";
                         return View();
                     }
