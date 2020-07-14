@@ -12,9 +12,7 @@ namespace FineOnlinePaymentSystem.Models
     {
         [Key]
         public int FinePaymentID { get; set; }
-
-        [Required]
-        public DateTime Paymentdate { get; set; }
+      
 
         [Required,Column(TypeName = "Decimal(10,2)"),Display(Name ="Amortization Amount")]
         public decimal AmortizationAmount { get; set; }
@@ -25,6 +23,7 @@ namespace FineOnlinePaymentSystem.Models
         [Required,Display(Name ="Proof of Payment")]
         public byte[] Attachment { get; set; }
 
+        public DateTime FinePaymentDate { get; set; }
 
 
         public int AmortizationID { get; set; }

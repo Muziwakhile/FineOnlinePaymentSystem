@@ -94,7 +94,7 @@
                     @Html.DisplayFor(modelItem => item.FinePaymentStatus.ID)
                 </td>*@
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.FinePaymentID">Pay Fine</a> |
+                    <a asp-action="Edit" asp-route-FindeId="@item.Fine.FineID" asp-route-CaseId="@item.Fine.Case.CaseID">Pay Fine</a> |
                     @*<a asp-action="Details" asp-route-id="@item.FinePaymentID">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.FinePaymentID">Delete</a>*@
                 </td>

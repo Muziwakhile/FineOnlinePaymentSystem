@@ -7,6 +7,7 @@ using FineOnlinePaymentSystem.BusinessLogicInterfaces;
 using FineOnlinePaymentSystem.Data;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FineOnlinePaymentSystem.Controllers
@@ -28,6 +29,9 @@ namespace FineOnlinePaymentSystem.Controllers
             amortization = new CrudOperations<Amortization>(context);
 
         }
+
+        [HttpGet]
+        [Authorize(Roles ="Relative")]
         public IActionResult Index(string pin, int caseNumber)
         {
             List<FinePayment> _finePay = new List<FinePayment>();
@@ -95,6 +99,33 @@ namespace FineOnlinePaymentSystem.Controllers
                 return View(_finePay);
             }
 
+        }
+
+
+
+        [HttpGet]
+        [Authorize(Roles ="Relative")]
+        public IActionResult Edit(int FindeId, int CaseId)
+        {
+            var _case = caseOps.GetById(CaseId);
+            var _fine = fineOps.GetById(FindeId);
+
+
+            var userid = context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            var _amortization = amortization.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+            var fnp = new FinePayment
+            {
+                RelativeID = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>().RelativeID,
+                FineID = _fine.FineID,
+                AmortizationID = _amortization.AmortizationID,
+                AmortizationAmount = _amortization.AmortizationAmount,
+                AmountPayable = amortizationCalculate.AmountPayable(_case, _fine),
+                Fine = _fine,
+                Amortization = _amortization,
+                Relative = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>()
+            };
+
+            return View(fnp);
         }
     }
 }

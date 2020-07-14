@@ -1,0 +1,72 @@
+﻿@model FineOnlinePaymentSystem.Models.FinePayment
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>FinePayment</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FinePaymentID" />
+            <input type="hidden" asp-for="AmortizationID" />
+            <input type="hidden" asp-for="RelativeID" />
+            <input type="hidden" asp-for="FineID" />
+            @*<div class="form-group">
+            <label asp-for="Paymentdate" class="control-label"></label>
+            <input asp-for="Paymentdate" class="form-control" />
+            <span asp-validation-for="Paymentdate" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="AmortizationAmount" class="control-label"></label>
+                <input asp-for="AmortizationAmount" class="form-control" readonly />
+                <span asp-validation-for="AmortizationAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AmountPayable" class="control-label"></label>
+                <input asp-for="AmountPayable" class="form-control" readonly />
+                <span asp-validation-for="AmountPayable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Attachment" class="control-label"></label>
+                <input asp-for="Attachment" class="form-control" />
+                <span asp-validation-for="Attachment" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="AmortizationID" class="control-label"></label>
+            <select asp-for="AmortizationID" class="form-control" asp-items="ViewBag.AmortizationID"></select>
+            <span asp-validation-for="AmortizationID" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <label asp-for="Relative.Name" class="control-label"></label>
+                <input asp-for="Relative.Name +' '+ Model.Relative.Surname" class="form-control" readonly />
+                <span asp-validation-for="RelativeID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FineID" class="control-label"></label>
+                <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
+                <span asp-validation-for="FineID" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="FinePaymentStatusID" class="control-label"></label>
+            <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
+            <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
+        </div>*@
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

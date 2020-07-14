@@ -158,6 +158,20 @@ namespace FineOnlinePaymentSystem.Data
                      Name = "Paid"
                  }
                 );
+
+            //seeding finePayment status
+            builder.Entity<FinePaymentStatus>().HasData(
+                new FinePaymentStatus
+                {
+                    ID = 1,
+                    Name = "Pending"
+                },
+                 new FinePaymentStatus
+                 {
+                     ID = 2,
+                     Name = "Paid"
+                 }
+                );
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
