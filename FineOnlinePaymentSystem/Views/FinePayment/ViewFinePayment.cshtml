@@ -1,0 +1,93 @@
+﻿@model IEnumerable<FineOnlinePaymentSystem.Models.FinePayment>
+
+@{
+    ViewData["Title"] = "ViewFinePayment";
+}
+
+<h1>ViewFinePayment</h1>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+<form class="form-inline" asp-action="Index" method="get">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+    <input type="text" id="caseNumber" maxlength="15" name="caseNumber" class="form-control col-md-2  mr-2" placeholder="Enter Case Number" />
+    <input type="text" id="pin" maxlength="15" name="pin" class="form-control col-md-2  mr-2" placeholder="Enter Offender PIN" />
+
+    <input type="submit" value="Search" class="btn btn-light" />
+    @*<span asp-validation-for="" class="text-danger"></span>*@
+
+</form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fine.Offender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fine.Case)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Fine.Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmortizationAmount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AmountPayable)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Attachment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Relative)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinePaymentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FinePaymentStatus)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fine.Offender.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fine.Case.CaseNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fine.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmortizationAmount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AmountPayable)
+            </td>
+            <td>
+                @Html.ActionLink("Proof of Payment","RetrieveImage","FinePayment",new {id  = item.FinePaymentID }, new  { target = "_blank"})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Relative.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinePaymentDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FinePaymentStatus.Name)
+            </td>
+            <td>
+                <a asp-action="ApprovePayment" asp-route-id="@item.FinePaymentID">Approve Fine</a> |
+                @*<a asp-action="Details" asp-route-id="@item.FinePaymentID">Details</a> |*@
+                @*<a asp-action="Delete" asp-route-id="@item.FinePaymentID">Delete</a>*@
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

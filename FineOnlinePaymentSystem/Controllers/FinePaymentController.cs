@@ -100,7 +100,8 @@ namespace FineOnlinePaymentSystem.Controllers
             }
             else
             {
-
+                ViewBag.Message = "Please fill in the Case Number and the offender's PIN ";
+                ViewBag.MessageType = "Warining";
                 return View(_finePay);
             }
 
@@ -134,6 +135,131 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
 
+        [HttpPost]
+        public IActionResult Edit(FinePayment _finePayment, IFormFile Attachment)
+        {
+            if (Attachment != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    Attachment.CopyTo(stream);
+                    _finePayment.Attachment = stream.ToArray();
+
+                }
+
+                _finePayment.FinePaymentDate = DateTime.Now;
+                _finePayment.FinePaymentStatusID = 1;
+
+                finepay.Insert(new FinePayment {
+                    AmortizationAmount = _finePayment.AmortizationAmount,
+                    AmountPayable = _finePayment.AmountPayable,
+                    Attachment = _finePayment.Attachment,
+                    AmortizationID = _finePayment.AmortizationID,
+                    RelativeID = _finePayment.RelativeID,
+                    FineID = _finePayment.FineID,
+                    FinePaymentStatusID = _finePayment.FinePaymentStatusID,
+                    FinePaymentDate = _finePayment.FinePaymentDate
+                });
+
+               return RedirectToAction("index");
+            }
+            else
+            {
+                ViewBag.Message = "Please attach prove of payment";
+                ViewBag.MessageType = "Warining";
+                return View();
+            }
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles ="SuperAdmin,Officer")]
+        public IActionResult ViewFinePayment(string pin, int caseNumber)
+        {
+            List<FinePayment> _finePay = new List<FinePayment>();
+            if (pin != null && caseNumber != 0)
+            {
+                var _case = caseOps.SearchByCaseNumber(caseNumber);
+                if (_case != null)
+                {
+                    var _fine = fineOps.GetAll().Where(f => f.Offender.PIN == pin).SingleOrDefault<Fine>();
+                    if (_fine != null)
+                    {
+                        var caseOffender = context.CaseOffenders.Where<CaseOffender>(co => co.CaseID == _case.CaseID && co.OffenderID == _fine.OffenderID).SingleOrDefault<CaseOffender>();
+                        if (caseOffender != null)
+                        {
+                            var userid = context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                            var _amortization = amortization.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+                            var fnp = new FinePayment
+                            {
+                                RelativeID = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>().RelativeID,
+                                FineID = _fine.FineID,
+                                AmortizationID = _amortization.AmortizationID,
+                                AmortizationAmount = _amortization.AmortizationAmount,
+                                AmountPayable = amortizationCalculate.AmountPayable(_case, _fine),
+                                Fine = _fine,
+                                Amortization = _amortization,
+                                Relative = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>()
+                            };
+                            _finePay.Add(fnp);
+
+
+
+
+                            return View(_finePay);
+                        }
+                        else
+                        {
+                            ViewBag.Message = "Specified Offender was not found in the specified case";
+                            ViewBag.MessageType = "Warining";
+
+                            return View(_finePay);
+                        }
+
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Please enter a valid Offender Pin: Pin not found";
+                        ViewBag.MessageType = "Warining";
+
+                        return View(_finePay);
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = "Please enter a valid Case Number: Case number was not found";
+                    ViewBag.MessageType = "Warining";
+
+                    return View(_finePay);
+                }
+
+                //return View();
+            }
+            else
+            {
+
+                var _finePayments = finepay.GetAll();
+                return View(_finePayments);
+            }
+
+           
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="Officer")]
+        public IActionResult ApprovePayment(int Id)
+        {
+            var _finepay = finepay.GetById(Id);
+            return View(_finepay);
+        }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Officer")]
+        public IActionResult ApprovePayment(FinePayment _fine)
+        {
+            return View();
+        }
 
 
         public ActionResult RetrieveImage(int id)
