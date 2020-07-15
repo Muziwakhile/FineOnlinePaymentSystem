@@ -88,7 +88,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="CreateFine">Create Fines</a>
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="Index">View Fines</a>
-                                        @*<a class="dropdown-item" href="#">View Cases</a>*@
+                                        <a class="dropdown-item" href="#">View Fine Payments</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>
@@ -96,10 +96,10 @@
                             else
                             {
                                 <li class="nav-item dropdown text-dark">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Fine Payment</a>
+                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" >Fine Payment</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="#">Search For Fine</a>
-                                        <a class="dropdown-item" href="#">Pay Fine</a>
+                                        <a class="dropdown-item" asp-controller="FinePayment" asp-action="index">Search For Relative's Fine</a>
+                                        @*<a class="dropdown-item" href="#">Pay Fine</a>*@
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>
