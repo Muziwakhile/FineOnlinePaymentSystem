@@ -16,6 +16,7 @@ using FineOnlinePaymentSystem.DataOpsInterfaces;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.BusinessLogicInterfaces;
 using FineOnlinePaymentSystem.BusinessLgicImplementations;
+using Microsoft.AspNetCore.Http;
 
 namespace FineOnlinePaymentSystem
 {
@@ -39,6 +40,8 @@ namespace FineOnlinePaymentSystem
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+
+            //services.AddScoped<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddScoped(typeof(IdataOps<>),typeof(CrudOperations<>));
             services.AddScoped<ICheckAmortization, CheckAmortization>();

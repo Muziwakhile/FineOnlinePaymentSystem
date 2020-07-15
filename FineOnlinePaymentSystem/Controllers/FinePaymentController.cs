@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using FineOnlinePaymentSystem.BusinessLgicImplementations;
@@ -8,7 +9,9 @@ using FineOnlinePaymentSystem.Data;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace FineOnlinePaymentSystem.Controllers
 {
@@ -19,7 +22,8 @@ namespace FineOnlinePaymentSystem.Controllers
         private readonly CaseOps caseOps;
         private readonly IAmortizationCalculate amortizationCalculate;
         private readonly CrudOperations<Amortization> amortization;
-
+        private readonly CrudOperations<FinePayment> finepay;
+        private  static byte[] main;
         public FinePaymentController(ApplicationDbContext _context, IAmortizationCalculate _amortizationCalculate)
         {
             context = _context;
@@ -27,11 +31,12 @@ namespace FineOnlinePaymentSystem.Controllers
             caseOps = new CaseOps(context);
             amortizationCalculate = _amortizationCalculate;
             amortization = new CrudOperations<Amortization>(context);
-
+            finepay = new CrudOperations<FinePayment>(context);
+            
         }
 
         [HttpGet]
-        [Authorize(Roles ="Relative")]
+        [Authorize(Roles = "Relative")]
         public IActionResult Index(string pin, int caseNumber)
         {
             List<FinePayment> _finePay = new List<FinePayment>();
@@ -104,7 +109,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles ="Relative")]
+        [Authorize(Roles = "Relative")]
         public IActionResult Edit(int FindeId, int CaseId)
         {
             var _case = caseOps.GetById(CaseId);
@@ -126,6 +131,45 @@ namespace FineOnlinePaymentSystem.Controllers
             };
 
             return View(fnp);
+        }
+
+
+
+
+        public ActionResult RetrieveImage(int id)
+        {
+            var result = finepay.GetById(id);
+
+            return new FileContentResult(result.Attachment, "application/pdf");
+        }
+
+
+
+        public void RetrieveImage2()
+        {
+
+            var image = Request.Form.Files[0];
+
+            using (var stream = new MemoryStream())
+            {
+                image.CopyTo(stream);
+                main = stream.ToArray();
+
+            }
+            //BinaryReader reader = new BinaryReader(image.InputStream);
+            //byte[] img = reader.ReadBytes(image.ContentLength);
+
+            //var g = File(img, "image/jpeg");
+            //main = img;
+            //return Json(new { image = g},JsonRequestBehavior.AllowGet); 
+
+
+            //return null;
+        }
+
+        public ActionResult RetrieveImage3()
+        {
+            return new FileContentResult(main, "application/pdf");
         }
     }
 }
