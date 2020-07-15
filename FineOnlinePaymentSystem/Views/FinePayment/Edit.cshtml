@@ -18,7 +18,12 @@
                     <input type="hidden" asp-for="RelativeID" />
                     <input type="hidden" asp-for="FineID" />
                     <div class="form-group">
-                        <label asp-for="Fine.Amount" class="control-label"></label>
+                        <label class="control-label">Offender Name</label>
+                        <input asp-for="Fine.Offender.Name" class="form-control" readonly />
+                        <span asp-validation-for="Fine.Offender.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label  class="control-label">Fine Amount</label>
                         <input asp-for="Fine.Amount" class="form-control" readonly />
                         <span asp-validation-for="Fine.Amount" class="text-danger"></span>
                     </div>
@@ -33,32 +38,28 @@
                         <span asp-validation-for="AmountPayable" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Relative.Name" class="control-label"></label>
+                        <label class="control-label">Surity/Relative Name</label>
                         <input asp-for="Relative.Name" class="form-control" readonly />
                         <span asp-validation-for="Relative.Name" class="text-danger"></span>
                     </div>
 
-                    <div class="form-group">
-                        <label asp-for="Fine.Offender.Name" class="control-label"></label>
-                        <input asp-for="Fine.Offender.Name" class="form-control" readonly />
-                        <span asp-validation-for="Fine.Offender.Name" class="text-danger"></span>
-                    </div>
-                    @*<div class="form-group">
-                            <label asp-for="AmortizationID" class="control-label"></label>
-                            <select asp-for="AmortizationID" class="form-control" asp-items="ViewBag.AmortizationID"></select>
-                            <span asp-validation-for="AmortizationID" class="text-danger"></span>
-                        </div>*@
 
                     @*<div class="form-group">
-                            <label asp-for="FineID" class="control-label"></label>
-                            <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
-                            <span asp-validation-for="FineID" class="text-danger"></span>
-                        </div>*@
+            <label asp-for="AmortizationID" class="control-label"></label>
+            <select asp-for="AmortizationID" class="form-control" asp-items="ViewBag.AmortizationID"></select>
+            <span asp-validation-for="AmortizationID" class="text-danger"></span>
+        </div>*@
+
                     @*<div class="form-group">
-                            <label asp-for="FinePaymentStatusID" class="control-label"></label>
-                            <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
-                            <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
-                        </div>*@
+            <label asp-for="FineID" class="control-label"></label>
+            <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
+            <span asp-validation-for="FineID" class="text-danger"></span>
+        </div>*@
+                    @*<div class="form-group">
+            <label asp-for="FinePaymentStatusID" class="control-label"></label>
+            <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
+            <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
+        </div>*@
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
@@ -66,22 +67,43 @@
 
 
                 <div class="col-md-4">
+
                     <div class="form-group">
-                            <label class="control-label">Attach Proof of pament</label>
-
-                            <input id="img" type="file" asp-for="Attachment" accept="application/pdf" class="form-control " multiple />
-                            <span asp-validation-for="Attachment" class="text-danger"></span>
-
+                        <label asp-for="Fine.Case.CaseNumber" class="control-label"></label>
+                        <input asp-for="Fine.Case.CaseNumber" class="form-control" readonly />
+                        <span asp-validation-for="Fine.Case.CaseNumber" class="text-danger"></span>
                     </div>
 
-                    
+                    <div class="form-group">
+                        <label asp-for="Fine.Case.CaseDescription" class="control-label"></label>
+                        <textarea rows="4" asp-for="Fine.Case.CaseDescription" class="form-control" readonly></textarea>
+                        <span asp-validation-for="Fine.Case.CaseDescription" class="text-danger"></span>
+                    </div>
+                    @*<div class="form-group">
+            <label asp-for="FineID" class="control-label"></label>
+            <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
+            <span asp-validation-for="FineID" class="text-danger"></span>
+        </div>*@
+                    @*<div class="form-group">
+            <label asp-for="FinePaymentStatusID" class="control-label"></label>
+            <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
+            <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
+        </div>*@
+
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label asp-for="Attachment" class="control-label"></label>
                         <div class="col-md-offset-2 col-md-10">
-                            <embed id="d" class="img-thumbnail" alt="Car Image" style="height:500px; width:500px;" type="application/pdf" />
+                            <embed id="d" class="img-thumbnail" alt="Car Image" style="height:300px; width:500px;" type="application/pdf" />
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Attach Proof of pament</label>
+
+                        <input id="img" type="file" asp-for="Attachment" accept="application/pdf" class="form-control " multiple />
+                        <span asp-validation-for="Attachment" class="text-danger"></span>
+
                     </div>
                 </div>
             </div>
@@ -95,6 +117,16 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+
+            $(".toast").toast('show')
+
+        </script>
+    }
+
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -123,28 +155,7 @@
                 })
             })
         })
-        @*$(document).ready(function () {
-    $('#img').change(function () {
-    var file = this.files;
-    var formData = new FormData();
-    formData.append("attachment", file[0]);
-    $.ajax({
-    type: "POST",
-    url: '@Url.Action("RetrieveImage2", "Cars")',
-    data: formData,
-    contentType:false,
-    processData: false,
-    success: function () {
-    var img = '@Url.Action("RetrieveImage3", "Cars")';
-    $('#d').attr('src', img);
-    alert('succes!!');
-    },
-    error: function (error) {
-    alert("errror");
-    }
-    });
-    });
-    });*@
+
     </script>
 
 
