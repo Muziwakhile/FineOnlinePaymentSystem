@@ -10,8 +10,6 @@ namespace FineOnlinePaymentSystem.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser,IdentityRole,string>
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -35,7 +33,7 @@ namespace FineOnlinePaymentSystem.Data
 
 
 
-        protected  async override void OnModelCreating(ModelBuilder builder)
+        protected  override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
@@ -176,9 +174,9 @@ namespace FineOnlinePaymentSystem.Data
                 );
 
 
-          await  _roleManager.CreateAsync(new IdentityRole { Name = "SuperAdmin" });
-          await  _roleManager.CreateAsync(new IdentityRole { Name = "Officer" });
-          await  _roleManager.CreateAsync(new IdentityRole { Name = "Relative" });
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "SuperAdmin" });
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "Officer" });
+            //await _roleManager.CreateAsync(new IdentityRole { Name = "Relative" });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
