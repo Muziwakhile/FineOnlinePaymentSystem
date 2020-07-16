@@ -184,6 +184,10 @@ namespace FineOnlinePaymentSystem.Controllers
 
                 return RedirectToAction("index");
             }
+            else if(_finePayment.Attachment != null)
+            {
+                return RedirectToAction("index");
+            }
             else
             {
                 ViewBag.Message = "Please attach prove of payment";
