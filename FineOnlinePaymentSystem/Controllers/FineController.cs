@@ -8,6 +8,7 @@ using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FineOnlinePaymentSystem.Controllers
 {
@@ -21,6 +22,8 @@ namespace FineOnlinePaymentSystem.Controllers
         private readonly OffenderOps offenders;
         private readonly CrudOperations<Fine> crudOps;
         private readonly CrudOperations<Amortization> crudOps2;
+        private readonly CrudOperations<Fine> fineOps;
+        private readonly CrudOperations<FineStatus> status;
 
         public FineController(ApplicationDbContext _context, ICheckAmortization _checkAmortization, IAmortizationCalculate _amortizationCalculate)
         {
@@ -32,26 +35,40 @@ namespace FineOnlinePaymentSystem.Controllers
             offenders = new OffenderOps(_context);
             crudOps = new FineOps(_context);
             crudOps2 = new CrudOperations<Amortization>(_context);
+            fineOps = new CrudOperations<Fine>(context);
+            status = new CrudOperations<FineStatus>(context);
         }
 
 
         [HttpGet]
-        public IActionResult Index(int caseNumber)
+        [Authorize(Roles ="SuperAdmin,Officer")]
+        public IActionResult Index(int caseNumber,int status)
         {
+            ViewBag.Status = new SelectList(this.status.GetAll(), "FineStatusID", "Name");
+
             if (caseNumber != 0 && caseNumber > 0)
             {
                 var _case = caseOps.SearchByCaseNumber(caseNumber);
-                var fine = crudOps.GetAll().Where(f => f.CaseID == _case.CaseID).ToList<Fine>();
+                var fine = fineOps.GetAll().Where(f => f.CaseID == _case.CaseID).ToList<Fine>();
 
                 return View(fine);
             }
-            var results = crudOps.GetAll();
-            return View(results);
+            else if (status > 0)
+            {
+                var results = fineOps.GetAll().Where( s => s.FineStatusID == status);
+                return View(results);
+            }
+            else
+            {
+                var results = fineOps.GetAll();
+                return View(results);
+            }
+           
         }
 
 
         [HttpGet]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Officer")]
         public IActionResult CreateFine()
         {
             return View();
@@ -60,7 +77,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "SuperAdmin")]
+        [Authorize(Roles = "Officer")]
         public IActionResult CreateFine(Fine fine)
         {
 
@@ -136,8 +153,18 @@ namespace FineOnlinePaymentSystem.Controllers
         [Authorize(Roles = "SuperAdmin")]
         public IActionResult Edit(int id)
         {
+            
+            var result = fineOps.GetById(id);
 
-            return View(crudOps.GetById(id));
+            if (result.FineStatusID == 2)
+            {
+                return RedirectToAction("Details", new { Id = id});
+            }
+            else
+            {
+                return View(result);
+            }
+           
         }
 
 
@@ -166,6 +193,13 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
 
+        [HttpGet]
+        [Authorize(Roles ="SuperAdmin,Officer")]
+        public IActionResult Details(int Id)
+        {
+            var result = fineOps.GetById(Id);
+            return View(result);
+        }
 
 
 

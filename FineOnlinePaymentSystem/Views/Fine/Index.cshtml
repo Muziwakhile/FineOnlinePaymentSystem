@@ -12,10 +12,19 @@
 <form class="form-inline" asp-action="Index" method="get">
     @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
 
-    <input type="text" id="caseNumber" maxlength="15" name="caseNumber" class="form-control col-md-2  mr-1" placeholder="Search By Case Number" />
+    <input type="text" id="caseNumber" maxlength="15" name="caseNumber" class="form-control col-md-2  mr-1 mb-2" placeholder="Search By Case Number" />
 
     <input type="submit" value="Search" class="btn btn-light" />
     @*<span asp-validation-for="" class="text-danger"></span>*@
+
+</form>
+<form class="form-inline" asp-action="Index" method="get">
+    @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
+
+
+    <select name="Status" class="form-control col-md-2 mr-1" asp-items="@ViewBag.Status as SelectList"><option value="">Select Status</option> </select>
+    <input type="submit" value="Search" class="btn btn-light" />
+    @*<span asp-validation-for="Name" class="text-danger"></span>*@
 
 </form>
 <table class="table">
@@ -36,7 +45,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.FineStatus)
             </th>
-            <th></th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -60,7 +69,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.FineID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FineID">Details</a> |
+                <a asp-action="Details" asp-route-id="@item.FineID">View</a> |
                 @*<a asp-action="Delete" asp-route-id="@item.FineID">Delete</a>*@
             </td>
         </tr>

@@ -1,0 +1,49 @@
+﻿@model FineOnlinePaymentSystem.Models.Fine
+
+@*@{
+    ViewData["Title"] = "Details";
+}*@
+
+
+
+<h4> View Fine</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Details">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="FineID" />
+            <input type="hidden" asp-for="Case.CaseNumber" id="caseNumber" />
+            <input type="hidden" asp-for="CaseID" />
+            <div class="form-group">
+                <label asp-for="Amount" class="control-label"></label>
+                <input asp-for="Amount" class="form-control" readonly />
+                <span asp-validation-for="Amount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Case.CaseNumber" class="control-label"></label>
+                <input asp-for="Case.CaseNumber" class="form-control" readonly />
+                <span asp-validation-for="Case.CaseNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Offender.PIN" class="control-label"></label>
+                <input id="PIN" asp-for="@Model.Offender.PIN" class="form-control" readonly />
+                <span asp-validation-for="@Model.Offender.PIN" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.FineStatus" class="control-label"></label>
+                <input id="PIN" asp-for="@Model.FineStatus.Name" class="form-control" readonly />
+                @*<span asp-validation-for="@Model.Offender.PIN" class="text-danger"></span>*@
+            </div>
+           
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
