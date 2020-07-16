@@ -92,12 +92,25 @@
 
                 </div>
                 <div class="col-md-4">
-                    <div class="form-group">
-                        <label asp-for="Attachment" class="control-label"></label>
-                        <div class="col-md-offset-2 col-md-10">
-                            <embed id="d" class="img-thumbnail" alt="Car Image" style="height:300px; width:500px;" type="application/pdf" />
+                    @if (Model.FinePaymentID > 0)
+                    {
+                        <div class="form-group">
+                            <label asp-for="Attachment" class="control-label"></label>
+                            <div class="col-md-offset-2 col-md-10">
+                                <embed src="@Url.Action("RetrieveImage","FinePayment",new { id = Model.FinePaymentID})" class="img-thumbnail" alt="Car Image" style="height:300px; width:500px;" type="application/pdf" />
+                            </div>
                         </div>
-                    </div>
+                    }
+                    else
+                    {
+                        <div class="form-group">
+                            <label asp-for="Attachment" class="control-label"></label>
+                            <div class="col-md-offset-2 col-md-10">
+                                <embed id="d" class="img-thumbnail" alt="Car Image" style="height:300px; width:500px;" type="application/pdf" />
+                            </div>
+                        </div>
+                    }
+
                     <div class="form-group">
                         <label class="control-label">Attach Proof of pament</label>
 
