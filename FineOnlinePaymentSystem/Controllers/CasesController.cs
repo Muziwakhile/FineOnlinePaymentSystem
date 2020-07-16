@@ -86,18 +86,29 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin,Officer")]
         public IActionResult Edit(int ID)
         {
             TempData["CaseID"] = ID;
             var result = caseOps.GetById(ID);
-            ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
-            //ViewBag.caseoff = caseof.GetById(ID);
-            return View(result);
+
+            if (result.CaseStatusID == 2)
+            {
+               return RedirectToAction("Details", new { id = ID });
+            }
+            else
+            {
+                ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
+                //ViewBag.caseoff = caseof.GetById(ID);
+                return View(result);
+            }
+           
         }
 
 
 
         [HttpPost]
+        [Authorize(Roles ="SuperAdmin,Officer")]
         public IActionResult Edit(Case model)
         {
 
@@ -127,6 +138,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles ="SuperAdmin,Officer")]
         public IActionResult Details(int ID)
         {
             var result = caseOps.GetById(ID);
@@ -162,6 +174,8 @@ namespace FineOnlinePaymentSystem.Controllers
             }
             else
             {
+                ViewBag.Message = "PIN not found in the system";
+                ViewBag.MessageType = "Warining";
                 return Json(new { ID = caseId });
             }
            
