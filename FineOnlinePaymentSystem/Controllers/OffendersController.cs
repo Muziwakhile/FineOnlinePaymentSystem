@@ -32,6 +32,7 @@ namespace FineOnlinePaymentSystem.Controllers
         [Route("Offenders/index")]
         //[Route("Offenders/Index/{Id?}")]
         [HttpGet]
+        [Authorize(Roles ="SuperAdmin,Officer")]
         public IActionResult Index(string pin,int Status)
         {
             ViewBag.StatusID = new SelectList(status.GetAll(), "StatusID", "Name");
@@ -64,6 +65,7 @@ namespace FineOnlinePaymentSystem.Controllers
         [HttpGet]
         //[Route("Offenders/Index/{Id?}")]
         //[ActionName("Index")]
+        [Authorize(Roles = "SuperAdmin,Officer")]
         public IActionResult Index(int id)
         {
             // if the id has been provided then it should get the offender by the ID
@@ -76,6 +78,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
         [Route("Offenders/Create")]
         [HttpGet]
+        [Authorize(Roles = "Officer")]
         public IActionResult Create()
         {
             return View();
@@ -83,6 +86,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
         
         [HttpPost]
+        [Authorize(Roles = "Officer")]
         public IActionResult Create(Offender offender)
         {
             if (ModelState.IsValid)
@@ -99,14 +103,16 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Officer")]
         public IActionResult Edit(int Id)
         {
-
+            ViewBag.StatusID = new SelectList(status.GetAll(), "StatusID", "Name");
             return View(offenderOps.GetById(Id));
         }
 
 
         [HttpPost]
+        [Authorize(Roles = "Officer")]
         public IActionResult Edit(Offender offender)
         {
             if (ModelState.IsValid)
@@ -115,13 +121,16 @@ namespace FineOnlinePaymentSystem.Controllers
                 result.HomeAddress = offender.HomeAddress;
                 result.Name = offender.Name;
                 result.Surname = offender.Surname;
+                result.StatusID = offender.StatusID;
                 offenderOps.Update(result);
+
             }
             return RedirectToAction("Index");
         }
 
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Details(int Id)
         {
 
