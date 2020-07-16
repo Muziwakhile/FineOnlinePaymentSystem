@@ -99,12 +99,12 @@
                         </div>
                     </div>
                     @*<div class="form-group">
-                        <label class="control-label">Attach Proof of pament</label>
+                            <label class="control-label">Attach Proof of pament</label>
 
-                        <input id="img" type="file" asp-for="Attachment" accept="application/pdf" class="form-control " multiple />
-                        <span asp-validation-for="Attachment" class="text-danger"></span>
+                            <input id="img" type="file" asp-for="Attachment" accept="application/pdf" class="form-control " multiple />
+                            <span asp-validation-for="Attachment" class="text-danger"></span>
 
-                    </div>*@
+                        </div>*@
                 </div>
             </div>
         </form>
@@ -117,4 +117,12 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+
+            $(".toast").toast('show')
+
+        </script>
+    }
 }
