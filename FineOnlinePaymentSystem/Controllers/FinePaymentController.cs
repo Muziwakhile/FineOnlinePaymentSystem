@@ -23,7 +23,8 @@ namespace FineOnlinePaymentSystem.Controllers
         private readonly IAmortizationCalculate amortizationCalculate;
         private readonly CrudOperations<Amortization> amortization;
         private readonly CrudOperations<FinePayment> finepay;
-        private  static byte[] main;
+        private readonly OffenderOps offenderOps;
+        private static byte[] main;
         public FinePaymentController(ApplicationDbContext _context, IAmortizationCalculate _amortizationCalculate)
         {
             context = _context;
@@ -32,7 +33,8 @@ namespace FineOnlinePaymentSystem.Controllers
             amortizationCalculate = _amortizationCalculate;
             amortization = new CrudOperations<Amortization>(context);
             finepay = new CrudOperations<FinePayment>(context);
-            
+            offenderOps = new OffenderOps(context);
+
         }
 
         [HttpGet]
@@ -48,6 +50,7 @@ namespace FineOnlinePaymentSystem.Controllers
                     var _fine = fineOps.GetAll().Where(f => f.Offender.PIN == pin).SingleOrDefault<Fine>();
                     if (_fine != null)
                     {
+
                         var caseOffender = context.CaseOffenders.Where<CaseOffender>(co => co.CaseID == _case.CaseID && co.OffenderID == _fine.OffenderID).SingleOrDefault<CaseOffender>();
                         if (caseOffender != null)
                         {
@@ -82,7 +85,7 @@ namespace FineOnlinePaymentSystem.Controllers
                     }
                     else
                     {
-                        ViewBag.Message = "Please enter a valid Offender Pin: Pin not found";
+                        ViewBag.Message = "Please enter a valid Offender Pin: Pin not found Or This Fine you're searching has been Paid";
                         ViewBag.MessageType = "Warining";
 
                         return View(_finePay);
@@ -117,25 +120,42 @@ namespace FineOnlinePaymentSystem.Controllers
             var _fine = fineOps.GetById(FindeId);
 
 
-            var userid = context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            var _amortization = amortization.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
-            var fnp = new FinePayment
+            var result = finepay.GetAll().Where(f => f.FineID == _fine.FineID).SingleOrDefault<FinePayment>();
+            if (result != null && result.FinePaymentStatusID == 2)
             {
-                RelativeID = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>().RelativeID,
-                FineID = _fine.FineID,
-                AmortizationID = _amortization.AmortizationID,
-                AmortizationAmount = _amortization.AmortizationAmount,
-                AmountPayable = amortizationCalculate.AmountPayable(_case, _fine),
-                Fine = _fine,
-                Amortization = _amortization,
-                Relative = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>()
-            };
+                ViewBag.Message = "Fine Has been already payed";
+                ViewBag.MessageType = "Warining";
+                return View();
+            }
+            else if (result != null && result.FinePaymentStatusID == 1)
+            {
+                return View(result);
+            }
+            else
+            {
+                var userid = context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                var _amortization = amortization.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+                var fnp = new FinePayment
+                {
+                    RelativeID = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>().RelativeID,
+                    FineID = _fine.FineID,
+                    AmortizationID = _amortization.AmortizationID,
+                    AmortizationAmount = _amortization.AmortizationAmount,
+                    AmountPayable = amortizationCalculate.AmountPayable(_case, _fine),
+                    Fine = _fine,
+                    Amortization = _amortization,
+                    Relative = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>()
+                };
 
-            return View(fnp);
+                return View(fnp);
+            }
+
+           
         }
 
 
         [HttpPost]
+        [Authorize(Roles = "Relative")]
         public IActionResult Edit(FinePayment _finePayment, IFormFile Attachment)
         {
             if (Attachment != null)
@@ -150,7 +170,8 @@ namespace FineOnlinePaymentSystem.Controllers
                 _finePayment.FinePaymentDate = DateTime.Now;
                 _finePayment.FinePaymentStatusID = 1;
 
-                finepay.Insert(new FinePayment {
+                finepay.Insert(new FinePayment
+                {
                     AmortizationAmount = _finePayment.AmortizationAmount,
                     AmountPayable = _finePayment.AmountPayable,
                     Attachment = _finePayment.Attachment,
@@ -161,7 +182,7 @@ namespace FineOnlinePaymentSystem.Controllers
                     FinePaymentDate = _finePayment.FinePaymentDate
                 });
 
-               return RedirectToAction("index");
+                return RedirectToAction("index");
             }
             else
             {
@@ -173,7 +194,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles ="SuperAdmin,Officer")]
+        [Authorize(Roles = "SuperAdmin,Officer")]
         public IActionResult ViewFinePayment(string pin, int caseNumber)
         {
             List<FinePayment> _finePay = new List<FinePayment>();
@@ -242,11 +263,11 @@ namespace FineOnlinePaymentSystem.Controllers
                 return View(_finePayments);
             }
 
-           
+
         }
 
         [HttpGet]
-        [Authorize(Roles ="Officer")]
+        [Authorize(Roles = "Officer")]
         public IActionResult ApprovePayment(int Id)
         {
             var _finepay = finepay.GetById(Id);
@@ -258,7 +279,38 @@ namespace FineOnlinePaymentSystem.Controllers
         [Authorize(Roles = "Officer")]
         public IActionResult ApprovePayment(FinePayment _fine)
         {
-            return View();
+            var _fineP = finepay.GetById(_fine.FinePaymentID);
+
+            if (_fineP.FinePaymentStatusID != 2)
+            {
+                var _fi = fineOps.GetById(_fineP.FineID);
+                var _case = caseOps.GetById(_fi.CaseID);
+                var _offender = offenderOps.GetById(_fi.OffenderID);
+
+
+                _fineP.FinePaymentStatusID = 2;
+                _fi.FineStatusID = 2;
+                _case.CaseStatusID = 2;
+                _offender.StatusID = 2;
+
+
+                finepay.Update(_fineP);
+                fineOps.Update(_fi);
+                caseOps.Update(_case);
+                offenderOps.Update(_offender);
+
+
+                ViewBag.Message = "Fine Payment Approved successfuly";
+                ViewBag.MessageType = "Warining";
+                return RedirectToAction("ViewFinePayment");
+            }
+            else
+            {
+                ViewBag.Message = "Fine Payment Already Approved";
+                ViewBag.MessageType = "Warining";
+                return RedirectToAction("ViewFinePayment");
+            }
+
         }
 
 
@@ -276,12 +328,9 @@ namespace FineOnlinePaymentSystem.Controllers
 
             var image = Request.Form.Files[0];
 
-            using (var stream = new MemoryStream())
-            {
-                image.CopyTo(stream);
-                main = stream.ToArray();
-
-            }
+            using var stream = new MemoryStream();
+            image.CopyTo(stream);
+            main = stream.ToArray();
             //BinaryReader reader = new BinaryReader(image.InputStream);
             //byte[] img = reader.ReadBytes(image.ContentLength);
 
