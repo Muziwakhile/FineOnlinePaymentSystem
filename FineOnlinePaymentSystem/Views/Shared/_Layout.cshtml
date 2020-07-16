@@ -35,7 +35,7 @@
                                 <li class="nav-item dropdown text-dark">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Offenders</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-controller="Offenders" asp-action="Create">Add Offenders</a>
+                                        <a class="dropdown-item" asp-controller="Offenders" asp-action="Create">Create Offenders</a>
                                         <a class="dropdown-item" asp-controller="Offenders" asp-action="Index">View Offenders</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
@@ -52,7 +52,7 @@
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Fines</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="Index">View Fines</a>
-                                        <a class="dropdown-item" href="#">Fine Payments</a>
+                                        <a class="dropdown-item" asp-controller="FinePayment" asp-action="ViewFinePayment">View Fine Payments</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>
@@ -70,8 +70,8 @@
                                 <li class="nav-item dropdown text-dark">
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">Offenders</a>
                                     <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-controller="Cases" asp-action="Index">View Cases</a>
-                                        @*<a class="dropdown-item" asp-controller="Offenders" asp-action="Index">View Offenders</a>*@
+                                        <a class="dropdown-item" asp-controller="Offenders" asp-action="Create">Create Offenders</a>
+                                        <a class="dropdown-item" asp-controller="Offenders" asp-action="Index">View Offenders</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>
@@ -88,7 +88,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="CreateFine">Create Fines</a>
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="Index">View Fines</a>
-                                        <a class="dropdown-item" href="#">View Fine Payments</a>
+                                        <a class="dropdown-item" asp-controller="FinePayment" asp-action="ViewFinePayment">View Fine Payments</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>
