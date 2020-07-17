@@ -400,9 +400,9 @@ namespace FineOnlinePaymentSystem.Data.Migrations
                 column: "StatusID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Officers_FroceNumber",
+                name: "IX_Officers_ForceNumber",
                 table: "Officers",
-                column: "FroceNumber",
+                column: "ForceNumber",
                 unique: true);
 
             migrationBuilder.CreateIndex(
