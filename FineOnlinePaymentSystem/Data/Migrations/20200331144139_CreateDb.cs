@@ -69,7 +69,7 @@ namespace FineOnlinePaymentSystem.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "varchar(25)", nullable: false),
                     Surname = table.Column<string>(type: "varchar(25)", nullable: false),
-                    FroceNumber = table.Column<int>(nullable: false),
+                    ForceNumber = table.Column<int>(nullable: false),
                     Contact = table.Column<long>(nullable: false),
                     UserID = table.Column<string>(nullable: true)
                 },

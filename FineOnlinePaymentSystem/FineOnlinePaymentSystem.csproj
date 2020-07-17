@@ -16,6 +16,8 @@
     <Compile Remove="Data\Migrations\20200331141505_CreateDb.Designer.cs" />
     <Compile Remove="FineOnlineSystem\Data\Migrations\20200714130215_Added Payment Date field.cs" />
     <Compile Remove="FineOnlineSystem\Data\Migrations\20200714130215_Added Payment Date field.Designer.cs" />
+    <Compile Remove="FineOnlineSystem\Data\Migrations\20200716231701_SeedingFinePaymentStatuses.cs" />
+    <Compile Remove="FineOnlineSystem\Data\Migrations\20200716231701_SeedingFinePaymentStatuses.Designer.cs" />
   </ItemGroup>
 
 
