@@ -1,12 +1,25 @@
 ﻿@model FineOnlinePaymentSystem.Models.Case
+@*@{
+        ViewData["Title"] = "Edit";
+    }*@
 
-@{
-    ViewData["Title"] = "Edit";
-}
+    <div style="position: absolute; top: 0; right: 0; margin-top:70px">
+        <div class="toast" id="toast1" role="alert" aria-live="assertive" aria-atomic="true" data-delay="7000">
+            <div class="toast-header">
+                <img src="" class="rounded mr-2" alt="...">
+                <strong class="mr-auto">@ViewBag.MessageType</strong>
+                <small>just now</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                @ViewBag.Message
+            </div>
+        </div>
+    </div>
 
-<h1>Edit</h1>
-
-<h4>Case</h4>
+<h4>Edit Case</h4>
 <hr />
 <div class="row">
     <div class="col-md-12">
@@ -114,6 +127,18 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+
+
+    @if (ViewBag.Message != null)
+    {
+        <script type="text/javascript">
+
+            $(".toast").toast('show')
+
+        </script>
+    }
+
     <script type="text/javascript">
     $(document).ready(function () {
 

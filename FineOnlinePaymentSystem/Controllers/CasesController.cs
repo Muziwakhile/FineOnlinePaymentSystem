@@ -42,7 +42,7 @@ namespace FineOnlinePaymentSystem.Controllers
         [HttpGet]
         //Action method that will be used to display all the cases
         //this action will also be used to filter searches according to either the status or the case number
-        public IActionResult Index(int status,int caseNumber)
+        public IActionResult Index(int status, int caseNumber)
         {
 
             ViewBag.Status = new SelectList(context.CaseStatuses.ToList<CaseStatus>(), "CaseStatusID", "Name");
@@ -62,9 +62,11 @@ namespace FineOnlinePaymentSystem.Controllers
             return View(caseOps.GetAll());
         }
 
+
+
         [Route("Cases/Create")]
         [HttpGet]
-        [Authorize(Roles ="Officer")]
+        [Authorize(Roles = "Officer")]
         public IActionResult Create()
         {
             ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
@@ -72,16 +74,54 @@ namespace FineOnlinePaymentSystem.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         [Authorize(Roles = "Officer")]
         public IActionResult Create(Case model)
         {
-            
-            model.CaseStatusID = 1;
-            model.Officer = officer.SearchByForceNumber(model.Officer.ForceNumber);
-            caseOps.Insert(model);
+            ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
+            ViewBag.OfficerID = new SelectList(officer.GetAll(), "OfficerID", "ForceNumber");
+            if (model.DateOfArrest != null && model.CourtDate != null)
+            {
+                if (model.CourtDate < model.DateOfArrest)
+                {
+                    ViewBag.Message = "Court date cannot be earlier than the date of arrest";
+                    ViewBag.MessageType = "Warining";
+                    return View(model);
+                }
+                else
+                {
+                    model.CaseStatusID = 1;
+                    model.Officer = officer.SearchByForceNumber(model.Officer.ForceNumber);
+                    caseOps.Insert(model);
 
-            return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+
+            }
+            else
+            {
+                model.CaseStatusID = 1;
+                var _officer = officer.SearchByForceNumber(model.Officer.ForceNumber);
+
+                if (_officer != null)
+                {
+                    model.Officer = _officer;
+                    caseOps.Insert(model);
+
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Message = "Officer force number not found";
+                    ViewBag.MessageType = "Warining";
+                    return View(model);
+                }
+
+            }
+
+
         }
 
 
@@ -94,7 +134,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
             if (result.CaseStatusID == 2)
             {
-               return RedirectToAction("Details", new { id = ID });
+                return RedirectToAction("Details", new { id = ID });
             }
             else
             {
@@ -102,43 +142,95 @@ namespace FineOnlinePaymentSystem.Controllers
                 //ViewBag.caseoff = caseof.GetById(ID);
                 return View(result);
             }
-           
+
         }
 
 
 
         [HttpPost]
-        [Authorize(Roles ="SuperAdmin,Officer")]
+        [Authorize(Roles = "SuperAdmin,Officer")]
         public IActionResult Edit(Case model)
         {
-
-            var ofresult = officer.SearchByForceNumber(model.Officer.ForceNumber);
-            model.OfficerID = ofresult.OfficerID;
-
-            if ( model.OffenceID > 0 || model.OfficerID > 0)
+            ViewBag.OffenceID = new SelectList(offence.GetAll(), "OffenseID", "Name");
+            if (model.CourtDate != null && model.DateOfArrest != null)
             {
+                if (model.CourtDate < model.DateOfArrest)
+                {
+                    ViewBag.Message = "Court date cannot be earlier than the date of arrest";
+                    ViewBag.MessageType = "Warining";
+                    return View(model);
+                }
+                else
+                {
+                    var ofresult = officer.SearchByForceNumber(model.Officer.ForceNumber);
+                    if (ofresult != null)
+                    {
+                        model.OfficerID = ofresult.OfficerID;
 
-                var fromdb = caseOps.GetById(model.CaseID);
-                
+                        var fromdb = caseOps.GetById(model.CaseID);
 
-                fromdb.CaseDescription = model.CaseDescription;
-                fromdb.CrimeLocation = model.CrimeLocation;
-                fromdb.DateOfArrest = model.DateOfArrest;
-                fromdb.DateOfCrime = model.DateOfCrime;
-                fromdb.OffenceID = model.OffenceID;
-                fromdb.OfficerID = model.OfficerID;
-                fromdb.CourtDate = model.CourtDate;
-                caseOps.Update(fromdb);
+
+                        fromdb.CaseDescription = model.CaseDescription;
+                        fromdb.CrimeLocation = model.CrimeLocation;
+                        fromdb.DateOfArrest = model.DateOfArrest;
+                        fromdb.DateOfCrime = model.DateOfCrime;
+                        fromdb.OffenceID = model.OffenceID;
+                        fromdb.OfficerID = model.OfficerID;
+                        fromdb.CourtDate = model.CourtDate;
+                        caseOps.Update(fromdb);
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Force Number invalid: No officer was found under this force number";
+                        ViewBag.MessageType = "Warining";
+                        return View(model);
+                    }
+                }
             }
-           
-            return RedirectToAction("Index");
+            else
+            {
+                var ofresult = officer.SearchByForceNumber(model.Officer.ForceNumber);
+                if (ofresult != null)
+                {
+                    model.OfficerID = ofresult.OfficerID;
+
+                    var fromdb = caseOps.GetById(model.CaseID);
+
+
+                    fromdb.CaseDescription = model.CaseDescription;
+                    fromdb.CrimeLocation = model.CrimeLocation;
+                    fromdb.DateOfArrest = model.DateOfArrest;
+                    fromdb.DateOfCrime = model.DateOfCrime;
+                    fromdb.OffenceID = model.OffenceID;
+                    fromdb.OfficerID = model.OfficerID;
+                    fromdb.CourtDate = model.CourtDate;
+                    caseOps.Update(fromdb);
+
+                    return RedirectToAction("Index");
+
+                }
+                else
+                {
+                    ViewBag.Message = "Force Number invalid: No officer was found under this force number";
+                    ViewBag.MessageType = "Warining";
+                    return View(model);
+                }
+            }
+
+
+
         }
 
 
 
 
+
+
+
         [HttpGet]
-        [Authorize(Roles ="SuperAdmin,Officer")]
+        [Authorize(Roles = "SuperAdmin,Officer")]
         public IActionResult Details(int ID)
         {
             var result = caseOps.GetById(ID);
@@ -148,29 +240,29 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles ="SuperAdmin")]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Delete(int caseID, int offenderID)
         {
             //var caseID = (int)ViewBag.CaseID;
             caseof.Delete(new CaseOffender { CaseID = caseID, OffenderID = offenderID });
             //var model = caseOps.GetById(caseID);
 
-            return  RedirectToAction("Edit",new { ID = caseID });
+            return RedirectToAction("Edit", new { ID = caseID });
         }
 
 
 
 
         [HttpGet]
-        public IActionResult SearchByPin(string pin,int caseId)
+        public IActionResult SearchByPin(string pin, int caseId)
         {
 
-          
+
             var result = offender.SearchByPin(pin);
             if (result != null)
             {
                 caseof.Insert(new CaseOffender { CaseID = caseId, OffenderID = result.OffenderID });
-                return Json( new { ID = caseId });
+                return Json(new { ID = caseId });
             }
             else
             {
@@ -178,7 +270,7 @@ namespace FineOnlinePaymentSystem.Controllers
                 ViewBag.MessageType = "Warining";
                 return Json(new { ID = caseId });
             }
-           
+
         }
 
 
@@ -204,9 +296,9 @@ namespace FineOnlinePaymentSystem.Controllers
         [HttpGet]
         public IActionResult LoadCOF(int ID)
         {
-            var cofmodel= caseof.GetByCaseIDOnly(ID);
+            var cofmodel = caseof.GetByCaseIDOnly(ID);
 
-            
+
             if (cofmodel != null)
             {
                 return PartialView("_SearchPartial", cofmodel);
@@ -215,7 +307,7 @@ namespace FineOnlinePaymentSystem.Controllers
             {
                 return null;
             }
-           
+
         }
 
 
@@ -246,13 +338,13 @@ namespace FineOnlinePaymentSystem.Controllers
 
             var result = officer.ListByForceNumber(forceNumber);
 
-            if (result!=null)
+            if (result != null)
             {
-                return Json( result);
+                return Json(result);
             }
             else
             {
-                return Json( result);
+                return Json(result);
             }
 
         }
