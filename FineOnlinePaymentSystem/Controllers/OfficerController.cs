@@ -20,6 +20,9 @@ namespace FineOnlinePaymentSystem.Controllers
             officer = new OfficerOps(context);
 
         }
+
+
+        [HttpGet]
         public IActionResult Index(int forceNumber)
         {
 
@@ -49,6 +52,30 @@ namespace FineOnlinePaymentSystem.Controllers
         }
 
 
+
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var result = officer.GetById(id);
+            return View(result);
+        }
+
+
+        [HttpPost]
+        public IActionResult Edit(Officer _officer)
+        {
+            var result = officer.GetById(_officer.OfficerID);
+
+            result.Name = _officer.Name;
+            result.Surname = _officer.Surname;
+            result.ForceNumber = _officer.ForceNumber;
+            result.Contact = _officer.Contact;
+
+            officer.Update(result);
+
+           return RedirectToAction("index");
+        }
 
 
 
