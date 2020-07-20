@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using FineOnlinePaymentSystem.Data;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FineOnlinePaymentSystem.Controllers
@@ -23,6 +24,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Index(int forceNumber)
         {
 
@@ -55,6 +57,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Edit(int id)
         {
             var result = officer.GetById(id);
@@ -63,6 +66,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin")]
         public IActionResult Edit(Officer _officer)
         {
             var result = officer.GetById(_officer.OfficerID);
@@ -75,6 +79,17 @@ namespace FineOnlinePaymentSystem.Controllers
             officer.Update(result);
 
            return RedirectToAction("index");
+        }
+
+
+
+        [HttpGet]
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult Details(int id)
+        {
+            var results = officer.GetById(id);
+
+            return View(results);
         }
 
 
