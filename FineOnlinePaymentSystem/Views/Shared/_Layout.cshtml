@@ -53,6 +53,7 @@
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="Index">View Fines</a>
                                         <a class="dropdown-item" asp-controller="FinePayment" asp-action="ViewFinePayment">View Fine Payments</a>
+                                        <a class="dropdown-item" asp-controller="FinePayment" asp-action="ViewFineCharges">Fine Charge table</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>
@@ -90,6 +91,7 @@
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="CreateFine">Create Fines</a>
                                         <a class="dropdown-item" asp-controller="Fine" asp-action="Index">View Fines</a>
                                         <a class="dropdown-item" asp-controller="FinePayment" asp-action="ViewFinePayment">View Fine Payments</a>
+                                        <a class="dropdown-item" asp-controller="FinePayment" asp-action="ViewFineCharges">Fine Charge table</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>
@@ -100,7 +102,7 @@
                                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" >Fine Payment</a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" asp-controller="FinePayment" asp-action="index">Search For Relative's Fine</a>
-                                        @*<a class="dropdown-item" href="#">Pay Fine</a>*@
+                                        <a class="dropdown-item" asp-controller="FinePayment" asp-action="ViewFineCharges">Fine Charge table</a>
                                         @*<a class="dropdown-item" href="#">Link 3</a>*@
                                     </div>
                                 </li>

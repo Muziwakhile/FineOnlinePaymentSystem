@@ -24,6 +24,7 @@ namespace FineOnlinePaymentSystem.Controllers
         private readonly CrudOperations<Amortization> amortization;
         private readonly CrudOperations<FinePayment> finepay;
         private readonly OffenderOps offenderOps;
+        private readonly CrudOperations<Offence> offence;
         private static byte[] main;
         public FinePaymentController(ApplicationDbContext _context, IAmortizationCalculate _amortizationCalculate)
         {
@@ -34,6 +35,7 @@ namespace FineOnlinePaymentSystem.Controllers
             amortization = new CrudOperations<Amortization>(context);
             finepay = new CrudOperations<FinePayment>(context);
             offenderOps = new OffenderOps(context);
+            offence = new CrudOperations<Offence>(context);
 
         }
 
@@ -316,6 +318,39 @@ namespace FineOnlinePaymentSystem.Controllers
             }
 
         }
+
+
+
+
+
+        [HttpGet]
+        public IActionResult ViewFineCharges()
+        {
+            return View(offence.GetAll());
+        }
+
+
+
+
+        [HttpGet]
+        [Authorize(Roles ="SuperAdmin")]
+        public IActionResult EditViewFineCharges(int id)
+        {
+            var _offence = offence.GetById(id);
+            return View(_offence);
+        }
+
+
+
+
+        [HttpPost]
+        [Authorize(Roles = "SuperAdmin")]
+        public IActionResult EditViewFineCharges(Offence _offence)
+        {
+            offence.Update(_offence);
+            return RedirectToAction("ViewFineCharges");
+        }
+
 
 
         public ActionResult RetrieveImage(int id)
