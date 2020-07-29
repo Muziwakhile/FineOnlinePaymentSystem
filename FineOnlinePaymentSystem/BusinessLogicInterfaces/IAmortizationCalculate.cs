@@ -15,7 +15,7 @@ namespace FineOnlinePaymentSystem.BusinessLogicInterfaces
 
         int DaysInJail(Case _case, Fine _fine);
         int DaysInJailRemaining(Case _case, Fine _fine);
-        DateTime ReleaseDate(Case _case, Fine _fine);
+        DateTime ReleaseDate(Case _case);
         decimal AmortizationAmountPerDay( Fine _fine);
         decimal AmortizationAmountNewFormula(Case _case, Fine fine);
     }

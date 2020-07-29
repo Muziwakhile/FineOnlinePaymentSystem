@@ -108,7 +108,7 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
         }
 
 
-        public DateTime ReleaseDate(Case _case, Fine _fine)
+        public DateTime ReleaseDate(Case _case)
         {
             int _daysOverstayed = DaysOverstayed(_case);
             int daystostay = DaysToBeInJail -_daysOverstayed;
