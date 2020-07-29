@@ -1,24 +1,23 @@
 ﻿@model FineOnlinePaymentSystem.Models.FinePayment
-
 @*@{
-    ViewData["Title"] = "ApprovePayment";
-}*@
+        ViewData["Title"] = "ApprovePayment";
+    }*@
 
-    <div style="position: absolute; top: 0; right: 0; margin-top:70px">
-        <div class="toast" id="toast2" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
-            <div class="toast-header">
-                <img src="" class="rounded mr-2" alt="...">
-                <strong class="mr-auto">@ViewBag.MessageType</strong>
-                <small>just now</small>
-                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="toast-body">
-                @ViewBag.Message
-            </div>
+<div style="position: absolute; top: 0; right: 0; margin-top:70px">
+    <div class="toast" id="toast2" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+        <div class="toast-header">
+            <img src="" class="rounded mr-2" alt="...">
+            <strong class="mr-auto">@ViewBag.MessageType</strong>
+            <small>just now</small>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            @ViewBag.Message
         </div>
     </div>
+</div>
 
 <h4>Approve Payment</h4>
 <hr />
@@ -93,6 +92,16 @@
                         <label asp-for="Fine.Case.CaseDescription" class="control-label"></label>
                         <textarea rows="4" asp-for="Fine.Case.CaseDescription" class="form-control" readonly></textarea>
                         <span asp-validation-for="Fine.Case.CaseDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Amortization Per Day</label>
+                        <input asp-for="Amortization.AmortizationAmountPerDay" class="form-control" readonly />
+                        <span asp-validation-for="Amortization.AmortizationAmountPerDay" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Release Date</label>
+                        <input asp-for="Fine.ReleaseDate" class="form-control" readonly />
+                        <span asp-validation-for="Fine.ReleaseDate" class="text-danger"></span>
                     </div>
                     @*<div class="form-group">
                             <label asp-for="FineID" class="control-label"></label>

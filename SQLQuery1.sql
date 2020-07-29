@@ -11,5 +11,7 @@ SELECT * FROM Officers
 SELECT * FROM Offenders
 SELECT * FROM Cases
 SELECT * FROM Fines
+SELECT * FROM Amortizations
+SELECT * FROM FinePayments
 
 --DELETE FROM Fines WHERE FineID = 2

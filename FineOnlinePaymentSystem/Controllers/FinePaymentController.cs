@@ -165,7 +165,7 @@ namespace FineOnlinePaymentSystem.Controllers
                 {
                     RelativeID = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>().RelativeID,
                     FineID = _fine.FineID,
-                    AmortizationID = _amortization.AmortizationID,
+                    //AmortizationID = _amortization.AmortizationID,
                     AmortizationAmount = _amortization.AmortizationAmount,
                     AmountPayable = amortizationCalculate.AmountPayable(_case, _fine),
                     Fine = _fine,
@@ -186,30 +186,65 @@ namespace FineOnlinePaymentSystem.Controllers
         {
             if (Attachment != null)
             {
-                using (var stream = new MemoryStream())
+                var _case = caseOps.GetById(_finePayment.Amortization.CaseID);
+                var _fine = fineOps.GetById(_finePayment.Amortization.FineID);
+
+                if (_finePayment.AmortizationID == 0)
                 {
-                    Attachment.CopyTo(stream);
-                    _finePayment.Attachment = stream.ToArray();
+                    using (var stream = new MemoryStream())
+                    {
+                        Attachment.CopyTo(stream);
+                        _finePayment.Attachment = stream.ToArray();
+
+                    }
+
+                    _finePayment.FinePaymentDate = DateTime.Now;
+                    _finePayment.FinePaymentStatusID = 1;
+
+                    Amortization _amortization = new Amortization
+                    {
+                        DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
+                        Percent = amortizationCalculate.AmortizationPercent(_case),
+                        AmortizationAmountPerDay = amortizationCalculate.AmortizationAmountPerDay(_fine),
+                        AmortizationAmount = amortizationCalculate.AmortizationAmountNewFormula(_case, _fine),
+                        CaseID = _case.CaseID,
+                        FineID = _fine.FineID
+                    };
+
+                    amortization.Insert(_amortization);
+
+                    finepay.Insert(new FinePayment
+                    {
+                        AmortizationAmount = _finePayment.AmortizationAmount,
+                        AmountPayable = _finePayment.AmountPayable,
+                        Attachment = _finePayment.Attachment,
+                        AmortizationID = amortization.GetAll().Where<Amortization>(a => a.CaseID == _case.CaseID && a.FineID == _fine.FineID).SingleOrDefault<Amortization>().AmortizationID,
+                        RelativeID = _finePayment.RelativeID,
+                        FineID = _finePayment.FineID,
+                        FinePaymentStatusID = _finePayment.FinePaymentStatusID,
+                        FinePaymentDate = _finePayment.FinePaymentDate
+                    });
+
+                    return RedirectToAction("index");
+                }
+                else
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        Attachment.CopyTo(stream);
+                        _finePayment.Attachment = stream.ToArray();
+
+                    }
+
+                    var _fineP = finepay.GetById(_finePayment.FinePaymentID);
+                    _fineP.Attachment = _finePayment.Attachment;
+
+                    finepay.Update(_fineP);
+
+                    return RedirectToAction("index");
 
                 }
 
-                _finePayment.FinePaymentDate = DateTime.Now;
-                _finePayment.FinePaymentStatusID = 1;
-
-
-                finepay.Insert(new FinePayment
-                {
-                    AmortizationAmount = _finePayment.AmortizationAmount,
-                    AmountPayable = _finePayment.AmountPayable,
-                    Attachment = _finePayment.Attachment,
-                    AmortizationID = _finePayment.AmortizationID,
-                    RelativeID = _finePayment.RelativeID,
-                    FineID = _finePayment.FineID,
-                    FinePaymentStatusID = _finePayment.FinePaymentStatusID,
-                    FinePaymentDate = _finePayment.FinePaymentDate
-                });
-
-                return RedirectToAction("index");
             }
             else if(_finePayment.Attachment != null)
             {

@@ -30,6 +30,8 @@
                     <input type="hidden" asp-for="FinePaymentID" />
                     <input type="hidden" asp-for="RelativeID" />
                     <input type="hidden" asp-for="FineID" />
+                    <input type="hidden" asp-for="AmortizationID" />
+
 
                     <input type="hidden" asp-for="Amortization.DaysOverstayed" />
                     <input type="hidden" asp-for="Amortization.Percent" />
@@ -66,21 +68,21 @@
 
 
                     @*<div class="form-group">
-            <label asp-for="AmortizationID" class="control-label"></label>
-            <select asp-for="AmortizationID" class="form-control" asp-items="ViewBag.AmortizationID"></select>
-            <span asp-validation-for="AmortizationID" class="text-danger"></span>
-        </div>*@
+                        <label asp-for="AmortizationID" class="control-label"></label>
+                        <select asp-for="AmortizationID" class="form-control" asp-items="ViewBag.AmortizationID"></select>
+                        <span asp-validation-for="AmortizationID" class="text-danger"></span>
+                    </div>*@
 
                     @*<div class="form-group">
-            <label asp-for="FineID" class="control-label"></label>
-            <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
-            <span asp-validation-for="FineID" class="text-danger"></span>
-        </div>*@
+                        <label asp-for="FineID" class="control-label"></label>
+                        <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
+                        <span asp-validation-for="FineID" class="text-danger"></span>
+                    </div>*@
                     @*<div class="form-group">
-            <label asp-for="FinePaymentStatusID" class="control-label"></label>
-            <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
-            <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
-        </div>*@
+                        <label asp-for="FinePaymentStatusID" class="control-label"></label>
+                        <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
+                        <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
+                    </div>*@
                     <div class="form-group">
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
@@ -100,16 +102,26 @@
                         <textarea rows="4" asp-for="Fine.Case.CaseDescription" class="form-control" readonly></textarea>
                         <span asp-validation-for="Fine.Case.CaseDescription" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label">Amortization Per Day</label>
+                        <input asp-for="Amortization.AmortizationAmountPerDay" class="form-control" readonly />
+                        <span asp-validation-for="Amortization.AmortizationAmountPerDay" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Release Date</label>
+                        <input asp-for="Fine.ReleaseDate" class="form-control" readonly />
+                        <span asp-validation-for="Fine.ReleaseDate" class="text-danger"></span>
+                    </div>
                     @*<div class="form-group">
-            <label asp-for="FineID" class="control-label"></label>
-            <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
-            <span asp-validation-for="FineID" class="text-danger"></span>
-        </div>*@
+                        <label asp-for="FineID" class="control-label"></label>
+                        <select asp-for="FineID" class="form-control" asp-items="ViewBag.FineID"></select>
+                        <span asp-validation-for="FineID" class="text-danger"></span>
+                    </div>*@
                     @*<div class="form-group">
-            <label asp-for="FinePaymentStatusID" class="control-label"></label>
-            <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
-            <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
-        </div>*@
+                        <label asp-for="FinePaymentStatusID" class="control-label"></label>
+                        <select asp-for="FinePaymentStatusID" class="form-control" asp-items="ViewBag.FinePaymentStatusID"></select>
+                        <span asp-validation-for="FinePaymentStatusID" class="text-danger"></span>
+                    </div>*@
 
                 </div>
                 <div class="col-md-4">
