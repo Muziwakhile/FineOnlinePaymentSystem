@@ -138,7 +138,7 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
 
         public decimal AmountPayable(Case _case, Fine fine)
         {
-            decimal amortamount = AmortizationAmount(_case, fine);
+            decimal amortamount = AmortizationAmountNewFormula(_case, fine);
 
             return fine.Amount - amortamount;
         }
