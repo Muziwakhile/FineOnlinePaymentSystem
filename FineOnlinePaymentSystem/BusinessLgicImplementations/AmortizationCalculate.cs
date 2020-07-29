@@ -1,4 +1,6 @@
 ﻿using FineOnlinePaymentSystem.BusinessLogicInterfaces;
+using FineOnlinePaymentSystem.Data;
+using FineOnlinePaymentSystem.DataOperationsImplementation;
 using FineOnlinePaymentSystem.DataOpsInterfaces;
 using FineOnlinePaymentSystem.Models;
 using System;
@@ -10,15 +12,16 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
 {
     public class AmortizationCalculate : IAmortizationCalculate
     {
-        private readonly IdataOps<AmortizationSettings> amortizationSettings;
+        /*private readonly IdataOps<AmortizationSettings> amortizationSettings*/
         private int daysOverstayed;
+        private readonly CrudOperations<AmortizationSettings> amortizationSettings;
         private readonly int daysbeforeAmortization;
         private readonly int PercentPerday;
         private readonly int DaysToBeInJail;
 
-        public AmortizationCalculate(IdataOps<AmortizationSettings> _amortizationSettings)
+        public AmortizationCalculate(ApplicationDbContext _context)
         {
-            amortizationSettings = _amortizationSettings;
+            amortizationSettings = new CrudOperations<AmortizationSettings>(_context);
             daysbeforeAmortization = amortizationSettings.GetById(1).DaysBeforeAmortization;
             PercentPerday = amortizationSettings.GetById(1).PercentPerDay;
             DaysToBeInJail = amortizationSettings.GetById(1).DaysToBeInJail;
@@ -45,7 +48,7 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
         {
 
             int totaldays = ((TimeSpan)(_case.CourtDate - _case.DateOfArrest)).Days;
-            daysOverstayed = totaldays - daysbeforeAmortization;
+            daysOverstayed = DaysOverstayed(_case);
 
             if (daysOverstayed >= 0)
             {
@@ -58,6 +61,7 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
             }
             else
             {
+                daysOverstayed = 0;
                 int _daysinJail = DaysInJail(_case, _fine);
 
                 int totalDaysInCustody = daysOverstayed + _daysinJail;
@@ -73,14 +77,15 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
         public int DaysOverstayed(Case _case)
         {
             int totaldays = ((TimeSpan)(_case.CourtDate - _case.DateOfArrest)).Days;
-            if (totaldays >= 0 )
+            daysOverstayed = totaldays - daysbeforeAmortization;
+            if (daysOverstayed > 0 )
             {
-                daysOverstayed = totaldays - daysbeforeAmortization;
 
                 return daysOverstayed;
             }
             else
             {
+                daysOverstayed = 0;
                 return daysOverstayed;
             }
           
@@ -89,7 +94,8 @@ namespace FineOnlinePaymentSystem.BusinessLgicImplementations
         public int DaysInJailRemaining(Case _case,Fine _fine)
         {
             int _daysOverstayed = DaysOverstayed(_case);
-            int totaldays = ((TimeSpan)(_fine.ReleaseDate - DateTime.Now)).Days - _daysOverstayed;
+            int daystostayinjail = DaysToBeInJail - _daysOverstayed;
+            int totaldays = daystostayinjail - DaysInJail(_case,_fine);
 
             //daysOverstayed = totaldays - daysbeforeAmortization;
 
