@@ -101,22 +101,23 @@ namespace FineOnlinePaymentSystem.Controllers
                             crudOps.Insert(new Fine
                             {
                                 Amount = fine.Amount,
+                                ReleaseDate = amortizationCalculate.ReleaseDate(_case),
                                 CaseID = _case.CaseID,
                                 OffenderID = offender.OffenderID,
                                 FineStatusID = fine.FineStatusID
                             });
 
 
-                            var _amortization = new Amortization
-                            {
-                                FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
-                                CaseID = _case.CaseID,
-                                DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
-                                Percent = amortizationCalculate.AmortizationPercent(_case),
-                                AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, fine)
-                            };
+                            //var _amortization = new Amortization
+                            //{
+                            //    FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
+                            //    CaseID = _case.CaseID,
+                            //    DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
+                            //    Percent = amortizationCalculate.AmortizationPercent(_case),
+                            //    AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, fine)
+                            //};
 
-                            crudOps2.Insert(_amortization);
+                            //crudOps2.Insert(_amortization);
 
 
                             ViewBag.Message = "Fine captured successfuly";
@@ -128,22 +129,23 @@ namespace FineOnlinePaymentSystem.Controllers
                             crudOps.Insert(new Fine
                             {
                                 Amount = fine.Amount,
+                                ReleaseDate = amortizationCalculate.ReleaseDate(_case),
                                 CaseID = _case.CaseID,
                                 OffenderID = offender.OffenderID,
                                 FineStatusID = fine.FineStatusID
                             });
 
 
-                            var _amortization2 = new Amortization
-                            {
-                                FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
-                                CaseID = _case.CaseID,
-                                DaysOverstayed = default,
-                                Percent = default,
-                                AmortizationAmount = default
-                            };
+                            //var _amortization2 = new Amortization
+                            //{
+                            //    FineID = context.Fines.Where<Fine>(c => c.CaseID == _case.CaseID && c.OffenderID == offender.OffenderID).Select(c => c.FineID).FirstOrDefault(),
+                            //    CaseID = _case.CaseID,
+                            //    DaysOverstayed = default,
+                            //    Percent = default,
+                            //    AmortizationAmount = default
+                            //};
 
-                            crudOps2.Insert(_amortization2);
+                            //crudOps2.Insert(_amortization2);
                             return RedirectToAction("Index");
                         }
 
@@ -200,34 +202,42 @@ namespace FineOnlinePaymentSystem.Controllers
         {
             var _case = caseOps.GetById(_fine.CaseID);
 
-            if (checkAmortization.CheckAmortizationStatus(_case))
-            {
-                var _amortizationUpdate = crudOps2.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+            //if (checkAmortization.CheckAmortizationStatus(_case))
+            //{
+            //    var _amortizationUpdate = crudOps2.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
 
-                _amortizationUpdate.DaysOverstayed = amortizationCalculate.DaysOverstayed(_case);
-                _amortizationUpdate.Percent = amortizationCalculate.AmortizationPercent(_case);
-                _amortizationUpdate.AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, _fine);
+            //    _amortizationUpdate.DaysOverstayed = amortizationCalculate.DaysOverstayed(_case);
+            //    _amortizationUpdate.Percent = amortizationCalculate.AmortizationPercent(_case);
+            //    _amortizationUpdate.AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, _fine);
 
-                crudOps2.Update(_amortizationUpdate);
-                return RedirectToAction("index");
-            }
-            else
-            {
-                var fineUpdate = crudOps.GetById(_fine.FineID);
-                fineUpdate.Amount = _fine.Amount;
+            //    crudOps2.Update(_amortizationUpdate);
+            //    return RedirectToAction("index");
+            //}
+            //else
+            //{
+            //    var fineUpdate = crudOps.GetById(_fine.FineID);
+            //    fineUpdate.Amount = _fine.Amount;
 
-                crudOps.Update(fineUpdate);
+            //    crudOps.Update(fineUpdate);
 
-                var amortizationUpdate = crudOps2.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+            //    var amortizationUpdate = crudOps2.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
 
-                amortizationUpdate.DaysOverstayed = amortizationCalculate.DaysOverstayed(_case);
-                amortizationUpdate.Percent = amortizationCalculate.AmortizationPercent(_case);
-                amortizationUpdate.AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, _fine);
+            //    amortizationUpdate.DaysOverstayed = amortizationCalculate.DaysOverstayed(_case);
+            //    amortizationUpdate.Percent = amortizationCalculate.AmortizationPercent(_case);
+            //    amortizationUpdate.AmortizationAmount = amortizationCalculate.AmortizationAmount(_case, _fine);
 
-                crudOps2.Update(amortizationUpdate);
+            //    crudOps2.Update(amortizationUpdate);
 
-                return RedirectToAction("index");
-            }
+            //    return RedirectToAction("index");
+            //}
+
+
+            var fineUpdate = crudOps.GetById(_fine.FineID);
+            fineUpdate.Amount = _fine.Amount;
+
+            crudOps.Update(fineUpdate);
+            return RedirectToAction("index");
+
 
         }
 
