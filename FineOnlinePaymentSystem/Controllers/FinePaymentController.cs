@@ -7,6 +7,7 @@ using FineOnlinePaymentSystem.BusinessLgicImplementations;
 using FineOnlinePaymentSystem.BusinessLogicInterfaces;
 using FineOnlinePaymentSystem.Data;
 using FineOnlinePaymentSystem.DataOperationsImplementation;
+using FineOnlinePaymentSystem.DataOpsInterfaces;
 using FineOnlinePaymentSystem.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,12 +27,12 @@ namespace FineOnlinePaymentSystem.Controllers
         private readonly OffenderOps offenderOps;
         private readonly CrudOperations<Offence> offence;
         private static byte[] main;
-        public FinePaymentController(ApplicationDbContext _context, IAmortizationCalculate _amortizationCalculate)
+        public FinePaymentController(ApplicationDbContext _context)
         {
             context = _context;
             fineOps = new FineOps(context);
             caseOps = new CaseOps(context);
-            amortizationCalculate = _amortizationCalculate;
+            amortizationCalculate = new AmortizationCalculate(context);
             amortization = new CrudOperations<Amortization>(context);
             finepay = new CrudOperations<FinePayment>(context);
             offenderOps = new OffenderOps(context);
@@ -57,12 +58,25 @@ namespace FineOnlinePaymentSystem.Controllers
                         if (caseOffender != null)
                         {
                             var userid = context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-                            var _amortization = amortization.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+
+                            var daysinjail = amortizationCalculate.DaysInJail(_case, _fine);
+                            var remainingDays = amortizationCalculate.DaysInJailRemaining(_case, _fine);
+                            Amortization _amortization = new Amortization
+                            {
+                                DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
+                                Percent = amortizationCalculate.AmortizationPercent(_case),
+                                AmortizationAmountPerDay = amortizationCalculate.AmortizationAmountPerDay(_fine),
+                                AmortizationAmount = amortizationCalculate.AmortizationAmountNewFormula(_case,_fine),
+                                CaseID = _case.CaseID,
+                                FineID = _fine.FineID
+                            };
+
+                            //amortization.Insert(_amortization);
                             var fnp = new FinePayment
                             {
                                 RelativeID = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>().RelativeID,
                                 FineID = _fine.FineID,
-                                AmortizationID = _amortization.AmortizationID,
+                                //AmortizationID = amortization.GetAll().Where<Amortization>(a => a.CaseID == _case.CaseID && a.FineID == _fine.FineID).SingleOrDefault<Amortization>().AmortizationID,
                                 AmortizationAmount = _amortization.AmortizationAmount,
                                 AmountPayable = amortizationCalculate.AmountPayable(_case, _fine),
                                 Fine = _fine,
@@ -136,7 +150,17 @@ namespace FineOnlinePaymentSystem.Controllers
             else
             {
                 var userid = context.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-                var _amortization = amortization.GetAll().Where(am => am.CaseID == _case.CaseID && am.FineID == _fine.FineID).SingleOrDefault<Amortization>();
+
+                Amortization _amortization = new Amortization
+                {
+                    DaysOverstayed = amortizationCalculate.DaysOverstayed(_case),
+                    Percent = amortizationCalculate.AmortizationPercent(_case),
+                    AmortizationAmountPerDay = amortizationCalculate.AmortizationAmountPerDay(_fine),
+                    AmortizationAmount = amortizationCalculate.AmortizationAmountNewFormula(_case, _fine),
+                    CaseID = _case.CaseID,
+                    FineID = _fine.FineID
+                };
+
                 var fnp = new FinePayment
                 {
                     RelativeID = context.Relatives.Where(r => r.IdentityUserID == userid.Id).FirstOrDefault<Relative>().RelativeID,
@@ -171,6 +195,7 @@ namespace FineOnlinePaymentSystem.Controllers
 
                 _finePayment.FinePaymentDate = DateTime.Now;
                 _finePayment.FinePaymentStatusID = 1;
+
 
                 finepay.Insert(new FinePayment
                 {

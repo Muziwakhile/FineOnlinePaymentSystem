@@ -28,16 +28,23 @@
                 <div class="col-md-4">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="FinePaymentID" />
-                    <input type="hidden" asp-for="AmortizationID" />
                     <input type="hidden" asp-for="RelativeID" />
                     <input type="hidden" asp-for="FineID" />
+
+                    <input type="hidden" asp-for="Amortization.DaysOverstayed" />
+                    <input type="hidden" asp-for="Amortization.Percent" />
+                    <input type="hidden" asp-for="Amortization.AmortizationAmount" />
+                    <input type="hidden" asp-for="Amortization.CaseID" />
+                    <input type="hidden" asp-for="Amortization.FineID" />
+                    <input type="hidden" asp-for="Amortization.AmortizationAmountPerDay" />
+
                     <div class="form-group">
                         <label class="control-label">Offender Name</label>
                         <input asp-for="Fine.Offender.Name" class="form-control" readonly />
                         <span asp-validation-for="Fine.Offender.Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label  class="control-label">Fine Amount</label>
+                        <label class="control-label">Fine Amount</label>
                         <input asp-for="Fine.Amount" class="form-control" readonly />
                         <span asp-validation-for="Fine.Amount" class="text-danger"></span>
                     </div>
