@@ -18,6 +18,9 @@ namespace FineOnlinePaymentSystem.Models
         [Required]
         public int Percent { get; set; }
 
+        [Column(TypeName = "Decimal(10,2)"), Display(Name = "Amortization Amount Per Day")]
+        public decimal AmortizationAmountPerDay { get; set; }
+
         [Required,Column(TypeName ="Decimal(10,2)"),Display(Name = "Amortization Amount")]
         public decimal AmortizationAmount { get; set; }
 

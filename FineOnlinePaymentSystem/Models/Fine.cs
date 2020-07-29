@@ -16,6 +16,9 @@ namespace FineOnlinePaymentSystem.Models
         public decimal Amount { get; set; }
 
 
+        [Display(Name = "Release Date"), DataType(DataType.Date)]
+        public DateTime? ReleaseDate { get; set; }
+
         public int CaseID { get; set; }
         public virtual Case Case { get; set; }
 

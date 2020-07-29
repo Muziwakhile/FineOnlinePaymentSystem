@@ -4,14 +4,16 @@ using FineOnlinePaymentSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace FineOnlinePaymentSystem.Data.Migrations
+namespace FineOnlinePaymentSystem.FineOnlineSystem.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200729120514_ChangedModelsForNewAmortizationFormula")]
+    partial class ChangedModelsForNewAmortizationFormula
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -78,8 +80,8 @@ namespace FineOnlinePaymentSystem.Data.Migrations
                         {
                             AmortizationSettingsID = 1,
                             DaysBeforeAmortization = 3,
-                            DaysToBeInJail = 270,
-                            PercentPerDay = 2
+                            DaysToBeInJail = 0,
+                            PercentPerDay = 6
                         });
                 });
 

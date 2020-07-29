@@ -10,9 +10,14 @@ namespace FineOnlinePaymentSystem.Models
     {
         [Key]
         public int AmortizationSettingsID { get; set; }
+
         [Required]
         public int PercentPerDay { get; set; }
+
+
         [Required, Display(Name = "Days before amortization")]
         public int DaysBeforeAmortization { get; set; }
+
+        public int DaysToBeInJail { get; set; }
     }
 }

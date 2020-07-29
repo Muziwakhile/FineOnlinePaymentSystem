@@ -138,8 +138,9 @@ namespace FineOnlinePaymentSystem.Data
                 new AmortizationSettings
                 {
                     AmortizationSettingsID = 1,
-                    PercentPerDay = 6,
-                    DaysBeforeAmortization = 3
+                    PercentPerDay = 2,
+                    DaysBeforeAmortization = 3,
+                    DaysToBeInJail = 270
                 }
                 );
 
